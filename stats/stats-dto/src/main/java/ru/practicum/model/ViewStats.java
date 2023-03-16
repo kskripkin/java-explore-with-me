@@ -14,4 +14,9 @@ public class ViewStats {
     String uri;
 
     int hits;
+
+    public ViewStats(String app, String uri) {
+        this.app = app;
+        this.uri = uri;
+    }
 }
