@@ -22,7 +22,7 @@ public interface EndpointHitRepository extends JpaRepository<EndpointHit, Long> 
             "where timestamp > ?1 and timestamp <= ?2 ", nativeQuery = true)
     Collection<ViewStats> getAllNonUnique(LocalDateTime start, LocalDateTime end);
 
-    @Query(value = "select app, uri, count(uri) " +
+    @Query(value = "select distinct on(uri) uri, app, count(uri) " +
             "from stats " +
             "where timestamp > ?1 and timestamp <= ?2 and uri = ?3 ", nativeQuery = true)
     ViewStats getOneUnique(LocalDateTime start, LocalDateTime end, String uri);
