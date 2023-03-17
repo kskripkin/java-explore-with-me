@@ -3,9 +3,9 @@ package ru.practicum.server.service;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
-import ru.practicum.model.ViewStats;
 import ru.practicum.server.dao.EndpointHitRepository;
 import ru.practicum.server.model.EndpointHit;
+import ru.practicum.server.model.ViewStats;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
@@ -31,9 +31,10 @@ public class StatsServiceImpl implements StatsService {
     public Collection<ViewStats> stats(LocalDateTime start, LocalDateTime end, String[] uris, boolean unique) {
         ArrayList<String> listUris = new ArrayList<>(Arrays.asList(uris));
         if (listUris.isEmpty()) {
-            return endpointHitRepository.getAll(start, end).stream()
-                    .map(this::mapperEndpointHitToViewStat)
-                    .collect(Collectors.toList());
+            return null;
+//            endpointHitRepository.getAll(start, end).stream()
+//                    .map(this::mapperEndpointHitToViewStat)
+//                    .collect(Collectors.toList());
         } else {
 //            return endpointHitRepository.getAll(start, end, listUris).stream()
 //                    .map(this::mapperEndpointHitToViewStat)
@@ -56,9 +57,9 @@ public class StatsServiceImpl implements StatsService {
 //        }
     }
 
-    private ViewStats mapperEndpointHitToViewStat(EndpointHit endpointHit) {
-        return new ViewStats(endpointHit.getApp(),
-                                endpointHit.getUri()
-                            );
-    }
+//    private ViewStats mapperEndpointHitToViewStat(EndpointHit endpointHit) {
+//        return new ViewStats(endpointHit.getApp(),
+//                                endpointHit.getUri()
+//                            );
+//    }
 }

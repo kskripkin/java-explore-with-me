@@ -1,7 +1,7 @@
 package ru.practicum.server.service;
 
-import ru.practicum.model.ViewStats;
 import ru.practicum.server.model.EndpointHit;
+import ru.practicum.server.model.ViewStats;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
