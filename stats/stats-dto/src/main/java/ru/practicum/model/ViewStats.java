@@ -3,6 +3,7 @@ package ru.practicum.model;
 import lombok.*;
 
 @Data
+@NoArgsConstructor
 @AllArgsConstructor
 public class ViewStats {
 
