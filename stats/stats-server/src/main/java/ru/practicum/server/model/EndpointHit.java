@@ -1,10 +1,12 @@
 package ru.practicum.server.model;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
+import java.time.LocalDateTime;
 
 @Data
 @AllArgsConstructor
@@ -27,5 +29,6 @@ public class EndpointHit {
     String ip;
 
     @Column(nullable = false)
-    String timestamp;
+    @JsonFormat(shape=JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd HH:mm:ss")
+    LocalDateTime timestamp;
 }

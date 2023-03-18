@@ -4,7 +4,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.*;
 import ru.practicum.server.model.EndpointHit;
-import ru.practicum.model.ViewStats;
+import ru.practicum.server.model.ViewStats;
 import ru.practicum.server.service.StatsService;
 
 import javax.validation.Valid;
@@ -19,7 +19,7 @@ public class StatsController {
     private final StatsService statsService;
 
     @PostMapping("/hit")
-    public EndpointHit hit(@RequestBody @Valid EndpointHit endpointHit) {
+    public EndpointHit hit(@RequestBody EndpointHit endpointHit) {
         log.info("POST /hit {}", endpointHit);
         return statsService.hit(endpointHit);
     }
