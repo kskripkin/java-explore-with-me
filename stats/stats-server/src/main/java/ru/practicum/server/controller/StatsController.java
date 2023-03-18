@@ -4,10 +4,9 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.*;
 import ru.practicum.server.model.EndpointHit;
-import ru.practicum.server.model.ViewStats;
+import ru.practicum.model.ViewStats;
 import ru.practicum.server.service.StatsService;
 
-import javax.validation.Valid;
 import java.util.Collection;
 
 @Slf4j

@@ -5,7 +5,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import ru.practicum.server.dao.EndpointHitRepository;
 import ru.practicum.server.model.EndpointHit;
-import ru.practicum.server.model.ViewStats;
+import ru.practicum.model.ViewStats;
 
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
