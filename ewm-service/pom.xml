@@ -7,9 +7,12 @@
         <version>0.0.1-SNAPSHOT</version>
     </parent>
     <artifactId>ewm-service</artifactId>
-    <packaging>war</packaging>
+    <packaging>pom</packaging>
     <name>ewm-service Maven Webapp</name>
     <url>http://maven.apache.org</url>
+    <modules>
+        <module>http-client</module>
+    </modules>
     <dependencies>
         <dependency>
             <groupId>junit</groupId>
