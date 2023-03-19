@@ -7,7 +7,7 @@ import ru.practicum.model.ViewStats;
 import ru.practicum.server.model.EndpointHit;
 import ru.practicum.server.service.StatsService;
 
-import java.util.Collection;
+import java.util.List;
 
 @Slf4j
 @RestController
@@ -24,10 +24,10 @@ public class StatsController {
     }
 
     @GetMapping("/stats")
-    public Collection<ViewStats> stats(@RequestParam(name = "start") String start,
-                                                          @RequestParam(name = "end") String end,
-                                                          @RequestParam(value="uris", required = false) String[] uris,
-                                                          @RequestParam(name = "unique", required = false, defaultValue = "false") boolean unique
+    public List<ViewStats> stats(@RequestParam(name = "start") String start,
+                                 @RequestParam(name = "end") String end,
+                                 @RequestParam(value="uris", required = false) String[] uris,
+                                 @RequestParam(name = "unique", required = false, defaultValue = "false") boolean unique
                            ) {
         log.info("GET /stats?start={}&end={}&uris={}&unique={}", start, end, uris, unique);
         return statsService.stats(start, end, uris, unique);

@@ -11,7 +11,7 @@ import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Collection;
+import java.util.List;
 
 @Slf4j
 @RequiredArgsConstructor
@@ -28,7 +28,7 @@ public class StatsServiceImpl implements StatsService {
     }
 
     @Override
-    public Collection<ViewStats> stats(String start, String end, String[] uris, boolean unique) {
+    public List<ViewStats> stats(String start, String end, String[] uris, boolean unique) {
         ArrayList<String> listUris = new ArrayList<>(Arrays.asList(uris));
         LocalDateTime startTime = LocalDateTime.parse(start, formatter);
         LocalDateTime endTime = LocalDateTime.parse(end, formatter);
