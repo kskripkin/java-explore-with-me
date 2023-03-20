@@ -1,15 +1,46 @@
 version: '3.1'
 services:
   stats-server:
+    build:
+      context: stats/stats-server/.
+      dockerfile: Dockerfile
+    container_name: statServer
     ports:
       - "9090:9090"
+    depends_on:
+      - stats-db
+    environment:
+      - SPRING_DATASOURCE_URL=jdbc:postgresql://stats-db:5432/statsExploreWithMe
+      - DB_NAME=statsExploreWithMe
+      - POSTGRES_USER=root
+      - POSTGRES_PASSWORD=root
+      - DB_HOST=stats-db
+      - DB_PORT=5432
+      - TZ=Europe/London
 
   stats-db:
     image: postgres:14-alpine
+    command: postgres -c port=5432
+    volumes:
+      - /var/lib/postgresql/data/
+    container_name: postgres
+    ports:
+      - "5432:5432"
+    environment:
+      - POSTGRES_PASSWORD=root
+      - POSTGRES_USER=root
+      - POSTGRES_DB=statsExploreWithMe
+      - TZ=Europe/London
 
   ewm-service:
+    build:
+      context: ewm-service/http-client/.
+      dockerfile: Dockerfile
+    container_name: ewmService
     ports:
       - "8080:8080"
+    environment:
+      - TZ=Europe/London
 
   ewm-db:
     image: postgres:14-alpine
