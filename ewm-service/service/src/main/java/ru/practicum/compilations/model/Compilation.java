@@ -9,7 +9,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public class Compilation {
 
-    Event events;
+    EventDto events;
 
     int id;
 
