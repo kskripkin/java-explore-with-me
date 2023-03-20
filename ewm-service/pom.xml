@@ -12,6 +12,7 @@
     <url>http://maven.apache.org</url>
     <modules>
         <module>http-client</module>
+        <module>service</module>
     </modules>
     <dependencies>
         <dependency>
