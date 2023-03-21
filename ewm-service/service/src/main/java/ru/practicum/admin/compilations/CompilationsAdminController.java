@@ -1,0 +1,34 @@
+package ru.practicum.admin.compilations;
+
+import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.web.bind.annotation.*;
+import ru.practicum.model.users.User;
+import ru.practicum.model.compilations.Compilation;
+
+@Slf4j
+@RestController
+@RequiredArgsConstructor
+@RequestMapping(value = "/admin/compilations")
+public class CompilationsAdminController {
+
+    private final CompilationAdminService compilationAdminService;
+
+    @PostMapping
+    public User addCompilation(@RequestBody Compilation compilation) {
+        log.info("POST /admin/compilations {}", compilation);
+        return compilationAdminService.addCompilation(compilation);
+    }
+
+    @DeleteMapping("/{compId}")
+    public void deleteCompilation(@PathVariable Integer compId) {
+        log.info("DELETE /admin/compilations/{}", compId);
+        compilationAdminService.deleteCompilation(compId);
+    }
+
+    @PatchMapping
+    public User editCompilation(@RequestBody Compilation compilation) {
+        log.info("PATCH /admin/compilations {}", compilation);
+        return compilationAdminService.editCompilation(compilation);
+    }
+}
