@@ -1,8 +1,8 @@
-package ru.practicum.admin;
+package ru.practicum.adminCategories;
 
 import ru.practicum.compilations.model.Category;
 
-public interface AdminService {
+public interface AdminCategoriesService {
 
     Category addCategory(Category category);
 

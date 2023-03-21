@@ -21,7 +21,7 @@ public class Event {
 
     LocalDateTime eventDate;
 
-    long location;
+    Location location;
 
     int id;
 
@@ -30,6 +30,8 @@ public class Event {
     long participantLimit;
 
     boolean requestModeration;
+
+    String stateAction;
 
     String title;
 }
