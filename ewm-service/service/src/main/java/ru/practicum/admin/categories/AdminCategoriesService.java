@@ -1,12 +1,12 @@
 package ru.practicum.admin.categories;
 
-import ru.practicum.model.compilations.Category;
+import ru.practicum.model.categories.Category;
 
 public interface AdminCategoriesService {
 
     Category addCategory(Category category);
 
-    Category deleteCategory(Integer catId);
+    void deleteCategory(Long catId);
 
-    Category editCategory(Integer catId);
+    Category editCategory(Integer catId, Category category);
 }

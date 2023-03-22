@@ -1,4 +1,7 @@
 package ru.practicum.global.categories;
 
-public interface CategoriesRepository extends JpaRepository<, Long> {
+import org.springframework.data.jpa.repository.JpaRepository;
+import ru.practicum.model.categories.Category;
+
+public interface CategoriesRepository extends JpaRepository<Category, Long> {
 }

@@ -4,9 +4,9 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 import ru.practicum.dto.RequestRsDto;
-import ru.practicum.model.compilations.EventDto;
-import ru.practicum.model.model.Event;
-import ru.practicum.model.model.RequestRqDto;
+import ru.practicum.model.events.EventDto;
+import ru.practicum.model.events.Event;
+import ru.practicum.model.request.RequestRqDto;
 
 import java.util.List;
 

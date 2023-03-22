@@ -1,7 +1,7 @@
 package ru.practicum.admin.events;
 
-import ru.practicum.model.compilations.EventDto;
-import ru.practicum.model.model.Event;
+import ru.practicum.model.events.EventDto;
+import ru.practicum.model.events.Event;
 
 import java.util.List;
 

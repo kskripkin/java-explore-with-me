@@ -2,7 +2,7 @@ package ru.practicum.global.requests;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
-import ru.practicum.model.model.Request;
+import ru.practicum.model.request.Request;
 
 import java.util.List;
 

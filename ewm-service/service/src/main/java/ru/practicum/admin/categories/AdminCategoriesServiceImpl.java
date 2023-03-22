@@ -2,25 +2,27 @@ package ru.practicum.admin.categories;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
-import ru.practicum.model.compilations.Category;
+import ru.practicum.global.categories.CategoriesRepository;
+import ru.practicum.model.categories.Category;
 
 @Service
 @RequiredArgsConstructor
 public class AdminCategoriesServiceImpl implements AdminCategoriesService {
 
-    private final AdminCategoriesRepository adminCategoriesRepository;
+    private final CategoriesRepository categoriesRepository;
     @Override
     public Category addCategory(Category category) {
-        return adminCategoriesRepository.addCategory(category);
+        return categoriesRepository.save(category);
     }
 
     @Override
-    public Category deleteCategory(Integer catId) {
-        return adminCategoriesRepository.deleteCategory(catId);
+    public void deleteCategory(Long catId) {
+        categoriesRepository.deleteById(catId);
     }
 
     @Override
-    public Category editCategory(Integer catId) {
-        return adminCategoriesRepository.editCategory(catId);
+    public Category editCategory(Integer catId, Category category) {
+        category.setId(catId);
+        return categoriesRepository.save(category);
     }
 }

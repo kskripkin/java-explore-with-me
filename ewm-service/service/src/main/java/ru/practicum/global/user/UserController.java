@@ -3,10 +3,10 @@ package ru.practicum.global.user;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.*;
-import ru.practicum.model.compilations.EventDto;
+import ru.practicum.model.events.EventDto;
 import ru.practicum.dto.RequestRsDto;
-import ru.practicum.model.model.Event;
-import ru.practicum.model.model.RequestRqDto;
+import ru.practicum.model.events.Event;
+import ru.practicum.model.request.RequestRqDto;
 
 import java.util.List;
 

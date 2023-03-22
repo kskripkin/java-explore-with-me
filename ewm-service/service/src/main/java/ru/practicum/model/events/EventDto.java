@@ -1,8 +1,10 @@
-package ru.practicum.model.compilations;
+package ru.practicum.model.events;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import ru.practicum.model.categories.Category;
+import ru.practicum.model.compilations.Initiator;
 
 import java.time.LocalDateTime;
 

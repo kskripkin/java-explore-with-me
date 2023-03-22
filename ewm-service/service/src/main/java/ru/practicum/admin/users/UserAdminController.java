@@ -31,7 +31,7 @@ public class UserAdminController {
     }
 
     @DeleteMapping("/{userId}")
-    public void deleteUser(@PathVariable Integer userId) {
+    public void deleteUser(@PathVariable Long userId) {
         log.info("DELETE /admin/users/{}", userId);
         userAdminService.deleteUser(userId);
     }

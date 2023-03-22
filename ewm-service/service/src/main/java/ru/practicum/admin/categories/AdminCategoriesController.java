@@ -3,7 +3,7 @@ package ru.practicum.admin.categories;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.*;
-import ru.practicum.model.compilations.Category;
+import ru.practicum.model.categories.Category;
 
 @Slf4j
 @RestController
@@ -20,15 +20,16 @@ public class AdminCategoriesController {
     }
 
     @DeleteMapping("/{catId}")
-    public Category deleteCategory(@PathVariable Integer catId) {
+    public void deleteCategory(@PathVariable Long catId) {
         log.info("DELETE /admin/categories/{}", catId);
-        return adminCategoriesService.deleteCategory(catId);
+        adminCategoriesService.deleteCategory(catId);
     }
 
     @PatchMapping("/{catId}")
-    public Category editCategory(@PathVariable Integer catId) {
-        log.info("PATCH /admin/categories/{}", catId);
-        return adminCategoriesService.editCategory(catId);
+    public Category editCategory(@PathVariable Integer catId,
+                                 @RequestBody Category category) {
+        log.info("PATCH /admin/categories/{} {}", catId, category);
+        return adminCategoriesService.editCategory(catId, category);
     }
 
 }

@@ -3,7 +3,7 @@ package ru.practicum.global.requests;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.*;
-import ru.practicum.model.model.Request;
+import ru.practicum.model.request.Request;
 
 import java.util.List;
 
