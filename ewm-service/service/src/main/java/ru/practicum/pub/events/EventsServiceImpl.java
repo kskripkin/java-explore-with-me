@@ -1,9 +1,8 @@
-package ru.practicum.admin.events;
+package ru.practicum.pub.events;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
-import ru.practicum.pub.events.EventRepository;
 import ru.practicum.model.events.EventDto;
 import ru.practicum.model.events.Event;
 
@@ -11,13 +10,13 @@ import java.util.List;
 
 @Service
 @RequiredArgsConstructor
-public class AdminEventsServiceImpl implements AdminEventsService {
+public class EventsServiceImpl implements EventsService {
 
     private final EventRepository eventRepository;
 
     @Override
-    public List<EventDto> getEvents(String[] users, String[] states, String[] categories, String rangeStart, String rangeEnd, Integer from, Integer size) {
-        return eventRepository.getEvents(users, states, categories, rangeStart, rangeEnd, PageRequest.of((from / size), size));
+    public List<EventDto> getEvents(String text, String[] categories, boolean paid, String rangeStart, String rangeEnd, boolean onlyAvailable, String sort, Integer from, Integer size) {
+        return eventRepository.getEvents(text, categories, paid, rangeStart, rangeEnd, onlyAvailable, sort, PageRequest.of((from / size), size));
     }
 
     @Override

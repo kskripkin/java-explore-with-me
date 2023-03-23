@@ -3,6 +3,8 @@ package ru.practicum.model.events;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import ru.practicum.model.categories.Category;
+import ru.practicum.model.users.User;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
@@ -10,17 +12,13 @@ import java.time.LocalDateTime;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-@Entity
-@Table(name = "events")
-public class Event {
+public class EventFullDto {
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
     long id;
 
     String annotation;
 
-    long category;
+    Category category;
 
     @Column(name = "confirmed_requests")
     long confirmedRequests;
@@ -33,9 +31,9 @@ public class Event {
     @Column(name = "event_date")
     LocalDateTime eventDate;
 
-    long initiator;
+    User initiator;
 
-    long location;
+    Location location;
 
     boolean paid;
 
@@ -48,7 +46,6 @@ public class Event {
     @Column(name = "request_moderation")
     boolean requestModeration;
 
-    @Column(name = "state_action")
     String stateAction;
 
     String title;

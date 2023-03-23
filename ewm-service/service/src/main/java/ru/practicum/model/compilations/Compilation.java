@@ -16,11 +16,11 @@ import javax.persistence.Id;
 @Entity
 public class Compilation {
 
-    EventDto events;
-
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     int id;
+
+    EventDto events;
 
     boolean pinned;
 
