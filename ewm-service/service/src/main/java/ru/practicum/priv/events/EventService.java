@@ -31,7 +31,7 @@ public interface EventService {
                                         long eventId
     );
 
-    EventRequestStatusUpdateRequest editRequests(long userId,
+    EventRequestStatusUpdateResult editRequests(long userId,
                               long eventId,
                               RequestRqDto requestRqDto
     );

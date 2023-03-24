@@ -60,7 +60,7 @@ public class EventController {
     }
 
     @PatchMapping("/{userId}/events/{eventId}/requests")
-    public EventRequestStatusUpdateRequest editRequests(@PathVariable long userId,
+    public EventRequestStatusUpdateResult editRequests(@PathVariable long userId,
                                      @PathVariable long eventId,
                                      @RequestBody RequestRqDto requestRqDto
     ) {

@@ -14,4 +14,14 @@ public interface RequestsRepository extends JpaRepository<Request, Long> {
             "where requester = ?1 ", nativeQuery = true)
     List<Long> getRequestsIdByRequesterId(long requester);
 
+
+    @Query(value = "update requests set status = ?3 " +
+            "where id in (?2) and event = ?1 ", nativeQuery = true)
+    void saveAllStatus(long eventId, List<Long> requestsId, String status);
+
+    @Query(value = "select id " +
+            "from requests " +
+            "where status = ?1 and event_id = ?2 ", nativeQuery = true)
+    List<Request> getRequestsByEventIdAndStatus(String status, long eventId);
+
 }
