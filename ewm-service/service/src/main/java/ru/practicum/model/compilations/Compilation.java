@@ -20,7 +20,7 @@ public class Compilation {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     int id;
 
-    EventDto events;
+    List<EventDto> events;
 
     boolean pinned;
 

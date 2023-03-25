@@ -3,7 +3,7 @@ package ru.practicum.pub.categories;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
-import ru.practicum.model.compilations.Compilation;
+import ru.practicum.model.categories.Category;
 
 import java.util.List;
 
@@ -14,12 +14,12 @@ public class CategoriesServiceImpl implements CategoriesService {
     private final CategoriesRepository categoriesRepository;
 
     @Override
-    public List<Compilation> getCategories(Integer from, Integer size) {
-        return categoriesRepository.getCategories(PageRequest.of((from / size), size));
+    public List<Category> getCategories(Integer from, Integer size) {
+        return categoriesRepository.findAll(PageRequest.of((from / size), size)).getContent();
     }
 
     @Override
-    public List<Compilation> getCategoriesOne(Integer catId) {
-        return categoriesRepository.getCategoriesOne(catId);;
+    public Category getCategoriesOne(long catId) {
+        return categoriesRepository.getById(catId);
     }
 }

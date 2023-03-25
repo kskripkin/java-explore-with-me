@@ -5,6 +5,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.*;
 import ru.practicum.model.events.EventDto;
 import ru.practicum.model.events.Event;
+import ru.practicum.model.events.EventFullDto;
 
 import java.util.List;
 
@@ -17,20 +18,20 @@ public class AdminEventsController {
     private final AdminEventsService adminEventsService;
 
     @GetMapping
-    public List<EventDto> getEvents(@RequestParam(value= "users", required = false) String[] users,
-                                         @RequestParam(value= "states", required = false) String[] states,
-                                         @RequestParam(value= "categories", required = false) String[] categories,
-                                         @RequestParam(value= "rangeStart", required = false) String rangeStart,
-                                         @RequestParam(value= "rangeEnd", required = false) String rangeEnd,
-                                         @RequestParam(name = "from", required = false, defaultValue = "0") Integer from,
-                                         @RequestParam(value= "size", required = false, defaultValue = "10") Integer size) {
+    public List<EventFullDto> getEvents(@RequestParam(value= "users", required = false) String[] users,
+                                        @RequestParam(value= "states", required = false) String[] states,
+                                        @RequestParam(value= "categories", required = false) String[] categories,
+                                        @RequestParam(value= "rangeStart", required = false) String rangeStart,
+                                        @RequestParam(value= "rangeEnd", required = false) String rangeEnd,
+                                        @RequestParam(name = "from", required = false, defaultValue = "0") Integer from,
+                                        @RequestParam(value= "size", required = false, defaultValue = "10") Integer size) {
         log.info("GET /admin/events?users={}&states={}&categories={}&rangeStart={}&rangeEnd={}&from={}&size={}",
                 users, states, categories, rangeStart, rangeEnd, from, size);
         return adminEventsService.getEvents(users, states, categories, rangeStart, rangeEnd, from, size);
     }
 
     @PatchMapping("/{eventId}")
-    public EventDto editEvent(@PathVariable Integer eventId,
+    public EventFullDto editEvent(@PathVariable Integer eventId,
                               @RequestBody Event event) {
         log.info("PATCH /admin/events/{} {}", eventId, event);
         return adminEventsService.editEvent(eventId, event);

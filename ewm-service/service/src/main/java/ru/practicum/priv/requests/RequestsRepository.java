@@ -24,4 +24,10 @@ public interface RequestsRepository extends JpaRepository<Request, Long> {
             "where status = ?1 and event_id = ?2 ", nativeQuery = true)
     List<Request> getRequestsByEventIdAndStatus(String status, long eventId);
 
+    @Query(value = "select r.id, r.created, r.event, r.requester, r.status " +
+            "from requests as r " +
+            "join events as e on r.event = e.id " +
+            "where r.requester = ?1 and e.initiator != ?1 ", nativeQuery = true)
+    List<Request> getByRequesterId(long userId);
+
 }
