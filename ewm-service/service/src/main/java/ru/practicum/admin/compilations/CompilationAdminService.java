@@ -1,13 +1,14 @@
 package ru.practicum.admin.compilations;
 
-import ru.practicum.model.users.User;
-import ru.practicum.model.compilations.Compilation;
+import ru.practicum.model.compilations.CompilationDto;
+import ru.practicum.model.compilations.NewCompilationDto;
+import ru.practicum.model.compilations.UpdateCompilationRequest;
 
 public interface CompilationAdminService {
 
-    User addCompilation(Compilation compilation);
+    CompilationDto addCompilation(NewCompilationDto newCompilationDto);
 
-    void deleteCompilation(Integer compId);
+    void deleteCompilation(Long compId);
 
-    User editCompilation(Compilation compilation);
+    CompilationDto editCompilation(Long compId, UpdateCompilationRequest updateCompilationRequest);
 }

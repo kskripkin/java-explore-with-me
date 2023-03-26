@@ -3,8 +3,9 @@ package ru.practicum.admin.compilations;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.*;
-import ru.practicum.model.users.User;
-import ru.practicum.model.compilations.Compilation;
+import ru.practicum.model.compilations.CompilationDto;
+import ru.practicum.model.compilations.NewCompilationDto;
+import ru.practicum.model.compilations.UpdateCompilationRequest;
 
 @Slf4j
 @RestController
@@ -15,20 +16,21 @@ public class CompilationsAdminController {
     private final CompilationAdminService compilationAdminService;
 
     @PostMapping
-    public User addCompilation(@RequestBody Compilation compilation) {
-        log.info("POST /admin/compilations {}", compilation);
-        return compilationAdminService.addCompilation(compilation);
+    public CompilationDto addCompilation(@RequestBody NewCompilationDto newCompilationDto) {
+        log.info("POST /admin/compilations {}", newCompilationDto);
+        return compilationAdminService.addCompilation(newCompilationDto);
     }
 
     @DeleteMapping("/{compId}")
-    public void deleteCompilation(@PathVariable Integer compId) {
+    public void deleteCompilation(@PathVariable Long compId) {
         log.info("DELETE /admin/compilations/{}", compId);
         compilationAdminService.deleteCompilation(compId);
     }
 
-    @PatchMapping
-    public User editCompilation(@RequestBody Compilation compilation) {
-        log.info("PATCH /admin/compilations {}", compilation);
-        return compilationAdminService.editCompilation(compilation);
+    @PatchMapping("/{compId}")
+    public CompilationDto editCompilation(@PathVariable Long compId,
+                                          @RequestBody UpdateCompilationRequest updateCompilationRequest) {
+        log.info("PATCH /admin/compilations {}", updateCompilationRequest);
+        return compilationAdminService.editCompilation(compId, updateCompilationRequest);
     }
 }
