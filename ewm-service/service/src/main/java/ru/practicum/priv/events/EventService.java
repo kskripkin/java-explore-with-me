@@ -13,8 +13,8 @@ public interface EventService {
                                   Integer size
     );
 
-    NewEventDto addEvent(long userId,
-                         Event event
+    EventFullDto addEvent(long userId,
+                         NewEventDto newEventDto
     );
 
     EventFullDto getEvent(long userId,

@@ -3,6 +3,7 @@ package ru.practicum.admin.events;
 import ru.practicum.model.events.EventDto;
 import ru.practicum.model.events.Event;
 import ru.practicum.model.events.EventFullDto;
+import ru.practicum.model.events.UpdateEventAdminRequest;
 
 import java.util.List;
 
@@ -18,5 +19,5 @@ public interface AdminEventsService {
     );
 
     EventFullDto editEvent(Integer eventId,
-                       Event event);
+                           UpdateEventAdminRequest event);
 }

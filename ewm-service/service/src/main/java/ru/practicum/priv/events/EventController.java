@@ -2,9 +2,9 @@ package ru.practicum.priv.events;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 import ru.practicum.model.events.*;
-import ru.practicum.model.dto.RequestRsDto;
 import ru.practicum.model.request.ParticipationRequestDto;
 import ru.practicum.model.request.RequestRqDto;
 
@@ -28,10 +28,11 @@ public class EventController {
     }
 
     @PostMapping("/{userId}/events")
-    public NewEventDto addEvent(@PathVariable long userId,
-                                @RequestBody Event event) {
-        log.info("POST /users/{}/event {}", userId, event);
-        return eventService.addEvent(userId, event);
+    @ResponseStatus(value = HttpStatus.CREATED)
+    public EventFullDto addEvent(@PathVariable long userId,
+                                @RequestBody NewEventDto newEventDto) {
+        log.info("POST /users/{}/event {}", userId, newEventDto);
+        return eventService.addEvent(userId, newEventDto);
     }
 
     @GetMapping("/{userId}/events/{eventId}")

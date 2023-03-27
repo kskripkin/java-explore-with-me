@@ -8,5 +8,5 @@ public interface AdminCategoriesService {
 
     void deleteCategory(Long catId);
 
-    Category editCategory(Integer catId, Category category);
+    Category editCategory(Long catId, Category category);
 }

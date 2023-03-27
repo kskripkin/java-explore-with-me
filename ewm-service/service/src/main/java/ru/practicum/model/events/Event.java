@@ -1,5 +1,7 @@
 package ru.practicum.model.events;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -12,6 +14,7 @@ import java.time.LocalDateTime;
 @NoArgsConstructor
 @Entity
 @Table(name = "events")
+@JsonIgnoreProperties({"hibernateLazyInitializer"})
 public class Event {
 
     @Id
@@ -31,6 +34,7 @@ public class Event {
     String description;
 
     @Column(name = "event_date")
+    @JsonFormat(shape=JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd HH:mm:ss")
     LocalDateTime eventDate;
 
     long initiator;

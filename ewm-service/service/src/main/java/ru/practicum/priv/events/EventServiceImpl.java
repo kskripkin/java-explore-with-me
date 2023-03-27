@@ -30,8 +30,9 @@ public class EventServiceImpl implements EventService {
     }
 
     @Override
-    public NewEventDto addEvent(long userId, Event event) {
-        return eventMapper.EventToNewEventDto(eventServiceRepository.save(event));
+    public EventFullDto addEvent(long userId, NewEventDto newEventDto) {
+        Event event = eventServiceRepository.save(eventMapper.newEventDtoToEvent(userId, newEventDto));
+        return eventMapper.EventToEventFullDto(event);
     }
 
     @Override

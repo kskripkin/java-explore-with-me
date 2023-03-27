@@ -1,5 +1,6 @@
 package ru.practicum.model.events;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -20,15 +21,16 @@ public class EventFullDto {
 
     Category category;
 
-    @Column(name = "confirmed_requests")
     long confirmedRequests;
 
-    @Column(name = "created_on")
+
+    @JsonFormat(shape=JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd HH:mm:ss")
     LocalDateTime createdOn;
 
     String description;
 
-    @Column(name = "event_date")
+
+    @JsonFormat(shape=JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd HH:mm:ss")
     LocalDateTime eventDate;
 
     User initiator;
@@ -37,16 +39,15 @@ public class EventFullDto {
 
     boolean paid;
 
-    @Column(name = "participant_limit")
     long participantLimit;
 
-    @Column(name = "published_on")
+
+    @JsonFormat(shape=JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd HH:mm:ss")
     LocalDateTime publishedOn;
 
-    @Column(name = "request_moderation")
     boolean requestModeration;
 
-    String stateAction;
+    String state;
 
     String title;
 

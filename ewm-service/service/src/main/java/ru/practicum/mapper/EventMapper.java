@@ -7,6 +7,8 @@ import ru.practicum.admin.users.UserRepository;
 import ru.practicum.model.events.*;
 import ru.practicum.pub.categories.CategoriesRepository;
 
+import java.time.LocalDateTime;
+
 @Component
 @RequiredArgsConstructor
 public class EventMapper {
@@ -76,5 +78,25 @@ public class EventMapper {
                 event.getTitle());
     }
 
+    public Event newEventDtoToEvent(long userId, NewEventDto newEventDto) {
+        return new Event(
+                0,
+                newEventDto.getAnnotation(),
+                newEventDto.getCategory(),
+                0,
+                LocalDateTime.now(),
+                newEventDto.getDescription(),
+                newEventDto.getEventDate(),
+                userId,
+                locationsRepository.save(newEventDto.getLocation()).getId(),
+                newEventDto.isPaid(),
+                newEventDto.getParticipantLimit(),
+                null,
+                newEventDto.isRequestModeration(),
+                "PENDING",
+                newEventDto.getTitle(),
+                0
+        );
+    }
 
 }

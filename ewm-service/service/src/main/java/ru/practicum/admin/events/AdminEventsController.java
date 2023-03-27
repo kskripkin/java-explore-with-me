@@ -6,6 +6,7 @@ import org.springframework.web.bind.annotation.*;
 import ru.practicum.model.events.EventDto;
 import ru.practicum.model.events.Event;
 import ru.practicum.model.events.EventFullDto;
+import ru.practicum.model.events.UpdateEventAdminRequest;
 
 import java.util.List;
 
@@ -32,7 +33,7 @@ public class AdminEventsController {
 
     @PatchMapping("/{eventId}")
     public EventFullDto editEvent(@PathVariable Integer eventId,
-                              @RequestBody Event event) {
+                              @RequestBody UpdateEventAdminRequest event) {
         log.info("PATCH /admin/events/{} {}", eventId, event);
         return adminEventsService.editEvent(eventId, event);
     }

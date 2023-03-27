@@ -10,7 +10,7 @@ import java.util.List;
 public interface UserRepository extends JpaRepository<User, Long> {
 
     @Query(value = "select * " +
-            "from users s " +
-            "where s.uri in (?1) ", nativeQuery = true)
+            "from users " +
+            "where id in (?1) ", nativeQuery = true)
     List<User> getUsers(Integer[] ids, Pageable pageable);
 }

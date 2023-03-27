@@ -5,6 +5,7 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 import ru.practicum.mapper.EventMapper;
 import ru.practicum.model.events.EventFullDto;
+import ru.practicum.model.events.UpdateEventAdminRequest;
 import ru.practicum.priv.events.EventServiceRepository;
 import ru.practicum.model.events.Event;
 
@@ -25,8 +26,8 @@ public class AdminEventsServiceImpl implements AdminEventsService {
     }
 
     @Override
-    public EventFullDto editEvent(Integer eventId, Event event) {
+    public EventFullDto editEvent(Integer eventId, UpdateEventAdminRequest updateEventAdminRequest) {
         event.setId(eventId);
-        return eventMapper.EventToEventFullDto(eventRepository.save(event));
+        return eventMapper.EventToEventFullDto(eventRepository.save(updateEventAdminRequest));
     }
 }
