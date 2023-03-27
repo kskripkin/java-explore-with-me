@@ -18,6 +18,6 @@ public interface AdminEventsService {
                                  Integer size
     );
 
-    EventFullDto editEvent(Integer eventId,
+    EventFullDto editEvent(Long eventId,
                            UpdateEventAdminRequest event);
 }

@@ -36,6 +36,7 @@ CREATE TABLE IF NOT EXISTS events (
                                      title VARCHAR(200),
                                      views BIGINT,
                                      CONSTRAINT pk_events PRIMARY KEY (id),
+                                     CONSTRAINT fk_events_to_category FOREIGN KEY(category) REFERENCES categories(id),
                                      CONSTRAINT fk_events_to_location FOREIGN KEY(location) REFERENCES locations(id),
                                      CONSTRAINT fk_events_to_users FOREIGN KEY(initiator) REFERENCES users(id)
 );

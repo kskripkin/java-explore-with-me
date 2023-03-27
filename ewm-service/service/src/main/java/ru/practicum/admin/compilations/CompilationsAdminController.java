@@ -2,6 +2,7 @@ package ru.practicum.admin.compilations;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 import ru.practicum.model.compilations.CompilationDto;
 import ru.practicum.model.compilations.NewCompilationDto;
@@ -16,12 +17,14 @@ public class CompilationsAdminController {
     private final CompilationAdminService compilationAdminService;
 
     @PostMapping
+    @ResponseStatus(value = HttpStatus.CREATED)
     public CompilationDto addCompilation(@RequestBody NewCompilationDto newCompilationDto) {
         log.info("POST /admin/compilations {}", newCompilationDto);
         return compilationAdminService.addCompilation(newCompilationDto);
     }
 
     @DeleteMapping("/{compId}")
+    @ResponseStatus(value = HttpStatus.NO_CONTENT)
     public void deleteCompilation(@PathVariable Long compId) {
         log.info("DELETE /admin/compilations/{}", compId);
         compilationAdminService.deleteCompilation(compId);

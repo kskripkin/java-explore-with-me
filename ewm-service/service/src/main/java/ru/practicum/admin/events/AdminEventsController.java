@@ -32,7 +32,7 @@ public class AdminEventsController {
     }
 
     @PatchMapping("/{eventId}")
-    public EventFullDto editEvent(@PathVariable Integer eventId,
+    public EventFullDto editEvent(@PathVariable Long eventId,
                               @RequestBody UpdateEventAdminRequest event) {
         log.info("PATCH /admin/events/{} {}", eventId, event);
         return adminEventsService.editEvent(eventId, event);
