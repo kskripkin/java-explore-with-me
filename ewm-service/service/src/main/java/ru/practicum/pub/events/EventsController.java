@@ -33,10 +33,9 @@ public class EventsController {
         return eventsService.getEvents(text, categories, paid, rangeStart, rangeEnd, onlyAvailable, sort, from, size);
     }
 
-    @PatchMapping("/{eventId}")
-    public EventFullDto editEvent(@PathVariable Integer eventId,
-                                  @RequestBody Event event) {
+    @GetMapping("/{eventId}")
+    public EventFullDto editEvent(@PathVariable Long eventId) {
         log.info("PATCH /events/{}", eventId);
-        return eventsService.editEvent(eventId, event);
+        return eventsService.editEvent(eventId);
     }
 }

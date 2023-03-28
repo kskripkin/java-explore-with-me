@@ -47,8 +47,10 @@ public class EventServiceImpl implements EventService {
     }
 
     @Override
-    public ParticipationRequestDto getRequests(long userId, long eventId) {
-        return requestMapper.RequestToParticipationRequestDto(requestsRepository.getById(eventId));
+    public List<ParticipationRequestDto> getRequests(long userId, long eventId) {
+        return requestsRepository.getByIdCurrentUser(eventId)
+                .stream()
+                .map(x -> requestMapper.RequestToParticipationRequestDto(x)).collect(Collectors.toList());
     }
 
     @Override

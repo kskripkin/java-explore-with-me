@@ -23,12 +23,10 @@ public class EventFullDto {
 
     long confirmedRequests;
 
-
     @JsonFormat(shape=JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd HH:mm:ss")
     LocalDateTime createdOn;
 
     String description;
-
 
     @JsonFormat(shape=JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd HH:mm:ss")
     LocalDateTime eventDate;
@@ -40,7 +38,6 @@ public class EventFullDto {
     boolean paid;
 
     long participantLimit;
-
 
     @JsonFormat(shape=JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd HH:mm:ss")
     LocalDateTime publishedOn;

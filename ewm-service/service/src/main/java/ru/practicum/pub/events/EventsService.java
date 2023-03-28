@@ -18,6 +18,5 @@ public interface EventsService {
                                   Integer from,
                                   Integer size);
 
-    EventFullDto editEvent(Integer eventId,
-                               Event event);
+    EventFullDto editEvent(Long eventId);
 }

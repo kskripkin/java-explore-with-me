@@ -21,7 +21,7 @@ public class Event {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     long id;
 
-    String annotation;
+    private String annotation;
 
     long category;
 
@@ -41,7 +41,7 @@ public class Event {
 
     long location;
 
-    boolean paid;
+    Boolean paid;
 
     @Column(name = "participant_limit")
     long participantLimit;
@@ -50,7 +50,7 @@ public class Event {
     LocalDateTime publishedOn;
 
     @Column(name = "request_moderation")
-    boolean requestModeration;
+    Boolean requestModeration;
 
     @Column(name = "state_action")
     String stateAction;

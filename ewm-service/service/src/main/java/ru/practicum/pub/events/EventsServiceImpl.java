@@ -55,8 +55,7 @@ public class EventsServiceImpl implements EventsService {
     }
 
     @Override
-    public EventFullDto editEvent(Integer eventId, Event event) {
-        event.setId(eventId);
-        return eventMapper.EventToEventFullDto(eventRepository.save(event));
+    public EventFullDto editEvent(Long eventId) {
+        return eventMapper.EventToEventFullDto(eventRepository.getById(eventId));
     }
 }

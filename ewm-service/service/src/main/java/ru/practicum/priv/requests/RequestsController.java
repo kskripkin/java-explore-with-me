@@ -18,7 +18,7 @@ public class RequestsController {
     private final RequestsService requestsService;
 
     @GetMapping("/{userId}/requests")
-    public List<ParticipationRequestDto> getUser(@PathVariable Long userId) {
+    public List<ParticipationRequestDto> getRequests(@PathVariable Long userId) {
         log.info("GET /users/{}/requests", userId);
         return requestsService.getRequests(userId);
     }

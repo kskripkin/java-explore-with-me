@@ -26,7 +26,7 @@ public class EventMapper {
                 event.getEventDate(),
                 userRepository.getById(event.getInitiator()),
                 locationsRepository.getById(event.getLocation()),
-                event.isPaid(),
+                event.getPaid(),
                 event.getTitle(),
                 event.getViews());
     }
@@ -38,9 +38,9 @@ public class EventMapper {
                 event.getDescription(),
                 event.getEventDate(),
                 locationsRepository.getById(event.getLocation()),
-                event.isPaid(),
+                event.getPaid(),
                 event.getParticipantLimit(),
-                event.isRequestModeration(),
+                event.getRequestModeration(),
                 event.getTitle());
     }
 
@@ -55,10 +55,10 @@ public class EventMapper {
                 event.getEventDate(),
                 userRepository.getById(event.getInitiator()),
                 locationsRepository.getById(event.getLocation()),
-                event.isPaid(),
+                event.getPaid(),
                 event.getParticipantLimit(),
                 event.getPublishedOn(),
-                event.isRequestModeration(),
+                event.getRequestModeration(),
                 event.getStateAction(),
                 event.getTitle(),
                 event.getViews());
@@ -71,9 +71,9 @@ public class EventMapper {
                 event.getDescription(),
                 event.getEventDate(),
                 locationsRepository.getById(event.getLocation()),
-                event.isPaid(),
+                event.getPaid(),
                 event.getParticipantLimit(),
-                event.isRequestModeration(),
+                event.getRequestModeration(),
                 event.getStateAction(),
                 event.getTitle());
     }

@@ -22,6 +22,7 @@ public class RequestsServiceImpl implements RequestsService {
 
     @Override
     public List<ParticipationRequestDto> getRequests(Long userId) {
+        System.out.println(requestsRepository.findAll());
         return requestsRepository.getByRequesterId(userId)
                 .stream()
                 .map(x -> requestMapper.RequestToParticipationRequestDto(x))
@@ -31,7 +32,7 @@ public class RequestsServiceImpl implements RequestsService {
     @Override
     public ParticipationRequestDto addRequests(Long userId, Long eventId) {
         Event event = eventRepository.getReferenceById(eventId);
-        if (event.isRequestModeration()) {
+        if (event.getRequestModeration()) {
             return requestMapper.RequestToParticipationRequestDto(
                     requestsRepository.save(new Request(
                             0,

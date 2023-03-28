@@ -5,6 +5,7 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import javax.persistence.OneToOne;
 import java.time.LocalDateTime;
 
 @Data
@@ -25,11 +26,11 @@ public class UpdateEventAdminRequest {
 
     Location location;
 
-    boolean paid;
+    Boolean paid;
 
     long participantLimit;
 
-    boolean requestModeration;
+    Boolean requestModeration;
 
     String stateAction;
 

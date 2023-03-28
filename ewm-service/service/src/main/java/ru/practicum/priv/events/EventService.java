@@ -26,7 +26,7 @@ public interface EventService {
                        Event event
     );
 
-    ParticipationRequestDto getRequests(long userId,
+    List<ParticipationRequestDto> getRequests(long userId,
                                         long eventId
     );
 

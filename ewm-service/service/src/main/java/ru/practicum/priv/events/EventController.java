@@ -53,7 +53,7 @@ public class EventController {
     }
 
     @GetMapping("/{userId}/events/{eventId}/requests")
-    public ParticipationRequestDto getRequests(@PathVariable long userId,
+    public List<ParticipationRequestDto> getRequests(@PathVariable long userId,
                                                @PathVariable long eventId
     ) {
         log.info("GET /users/{}/event/{}/requests", userId, eventId);

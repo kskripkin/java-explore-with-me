@@ -1,6 +1,7 @@
 package ru.practicum.admin.events;
 
 import lombok.RequiredArgsConstructor;
+import org.mapstruct.factory.Mappers;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 import ru.practicum.mapper.CustomerMapper;
@@ -20,12 +21,9 @@ public class AdminEventsServiceImpl implements AdminEventsService {
     private final EventServiceRepository eventRepository;
     private final EventMapper eventMapper;
 
-    private CustomerMapper customerMapper = new CustomerMapper() {
-        @Override
-        public void updateEventFromUpdateEventAdminRequest(UpdateEventAdminRequest updateEventAdminRequest, Event event) {
-
-        }
-    };
+    //private CustomerMapper customerMapper;
+    private CustomerMapper mapper
+            = Mappers.getMapper(CustomerMapper.class);
 
     @Override
     public List<EventFullDto> getEvents(String[] users, String[] states, String[] categories, String rangeStart, String rangeEnd, Integer from, Integer size) {
@@ -37,8 +35,16 @@ public class AdminEventsServiceImpl implements AdminEventsService {
     @Override
     public EventFullDto editEvent(Long eventId, UpdateEventAdminRequest updateEventAdminRequest) {
         Event event = eventRepository.getById(eventId);
-        customerMapper.updateEventFromUpdateEventAdminRequest(updateEventAdminRequest, event);
-        event.setId(eventId);
-        return eventMapper.EventToEventFullDto(eventRepository.save(event));
+        System.out.println(event);
+        //Event event2 = mapper.updateEventFromUpdateEventAdminRequest(updateEventAdminRequest);
+        Event event1 = mapper.updateEventFromUpdateEventAdminRequest(updateEventAdminRequest, event);
+//        System.out.println(event);
+//        System.out.println("2222222cccccc         "+event2);
+        event1.setId(eventId);
+        if (event1.getStateAction().equals("PUBLISH_EVENT")) {
+            event1.setStateAction("PUBLISHED");
+        }
+        System.out.println(event1);
+        return eventMapper.EventToEventFullDto(eventRepository.save(event1));
     }
 }
