@@ -28,12 +28,12 @@ public class EventsServiceImpl implements EventsService {
                     return eventRepository.getEventsSortEventDate(text, categories, paid, rangeStart, rangeEnd, PageRequest.of((from / size), size))
                             .stream()
                             .filter(x -> x.getParticipantLimit() > x.getConfirmedRequests())
-                            .map(x -> eventMapper.EventToEventShortDto(x))
+                            .map(x -> eventMapper.eventToEventShortDto(x))
                             .collect(Collectors.toList());
                 } else {
                     return eventRepository.getEventsSortEventDate(text, categories, paid, rangeStart, rangeEnd, PageRequest.of((from / size), size))
                             .stream()
-                            .map(x -> eventMapper.EventToEventShortDto(x))
+                            .map(x -> eventMapper.eventToEventShortDto(x))
                             .collect(Collectors.toList());
                 }
             case "VIEWS":
@@ -41,12 +41,12 @@ public class EventsServiceImpl implements EventsService {
                     return eventRepository.getEventsSortViews(text, categories, paid, rangeStart, rangeEnd, PageRequest.of((from / size), size))
                             .stream()
                             .filter(x -> x.getParticipantLimit() > x.getConfirmedRequests())
-                            .map(x -> eventMapper.EventToEventShortDto(x))
+                            .map(x -> eventMapper.eventToEventShortDto(x))
                             .collect(Collectors.toList());
                 } else {
                     return eventRepository.getEventsSortViews(text, categories, paid, rangeStart, rangeEnd, PageRequest.of((from / size), size))
                             .stream()
-                            .map(x -> eventMapper.EventToEventShortDto(x))
+                            .map(x -> eventMapper.eventToEventShortDto(x))
                             .collect(Collectors.toList());
                 }
             default:
@@ -56,6 +56,6 @@ public class EventsServiceImpl implements EventsService {
 
     @Override
     public EventFullDto editEvent(Long eventId) {
-        return eventMapper.EventToEventFullDto(eventRepository.getById(eventId));
+        return eventMapper.eventToEventFullDto(eventRepository.getById(eventId));
     }
 }

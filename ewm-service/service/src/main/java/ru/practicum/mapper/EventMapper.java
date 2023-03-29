@@ -17,7 +17,7 @@ public class EventMapper {
     private final UserRepository userRepository;
     private final LocationsRepository locationsRepository;
 
-    public EventShortDto EventToEventShortDto(Event event) {
+    public EventShortDto eventToEventShortDto(Event event) {
         return new EventShortDto(
                 event.getId(),
                 event.getAnnotation(),
@@ -31,7 +31,7 @@ public class EventMapper {
                 event.getViews());
     }
 
-    public NewEventDto EventToNewEventDto(Event event) {
+    public NewEventDto eventToNewEventDto(Event event) {
         return new NewEventDto(
                 event.getAnnotation(),
                 event.getCategory(),
@@ -44,7 +44,7 @@ public class EventMapper {
                 event.getTitle());
     }
 
-    public EventFullDto EventToEventFullDto(Event event) {
+    public EventFullDto eventToEventFullDto(Event event) {
         return new EventFullDto(
                 event.getId(),
                 event.getAnnotation(),
@@ -64,7 +64,7 @@ public class EventMapper {
                 event.getViews());
     }
 
-    public UpdateEventUserRequest EventToUpdateEventUserRequest(Event event) {
+    public UpdateEventUserRequest eventToUpdateEventUserRequest(Event event) {
         return new UpdateEventUserRequest(
                 event.getAnnotation(),
                 event.getCategory(),

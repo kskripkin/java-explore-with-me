@@ -3,8 +3,6 @@ package ru.practicum.admin.events;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.*;
-import ru.practicum.model.events.EventDto;
-import ru.practicum.model.events.Event;
 import ru.practicum.model.events.EventFullDto;
 import ru.practicum.model.events.UpdateEventAdminRequest;
 

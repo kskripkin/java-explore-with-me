@@ -3,6 +3,8 @@ package ru.practicum.priv.events;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+import ru.practicum.mapper.CustomerMapperImpl;
 import ru.practicum.mapper.EventMapper;
 import ru.practicum.mapper.RequestMapper;
 import ru.practicum.model.events.*;
@@ -22,28 +24,35 @@ public class EventServiceImpl implements EventService {
     private final EventMapper eventMapper;
     private final RequestMapper requestMapper;
 
+    private final CustomerMapperImpl customerMapper;
+
     @Override
     public List<EventShortDto> getEvents(long userId, Integer from, Integer size) {
         return eventServiceRepository.getEvents(userId, PageRequest.of((from / size), size))
                 .stream()
-                .map(x -> eventMapper.EventToEventShortDto(x)).collect(Collectors.toList());
+                .map(x -> eventMapper.eventToEventShortDto(x)).collect(Collectors.toList());
     }
 
     @Override
     public EventFullDto addEvent(long userId, NewEventDto newEventDto) {
         Event event = eventServiceRepository.save(eventMapper.newEventDtoToEvent(userId, newEventDto));
-        return eventMapper.EventToEventFullDto(event);
+        return eventMapper.eventToEventFullDto(event);
     }
 
     @Override
     public EventFullDto getEvent(long userId, long eventId) {
-        return eventMapper.EventToEventFullDto(eventServiceRepository.getById(eventId));
+        return eventMapper.eventToEventFullDto(eventServiceRepository.getById(eventId));
     }
 
     @Override
-    public UpdateEventUserRequest editEvent(long userId, long eventId, Event event) {
-        event.setId(eventId);
-        return eventMapper.EventToUpdateEventUserRequest(eventServiceRepository.save(event));
+    public EventFullDto editEvent(long userId, long eventId, UpdateEventUserRequest event) {
+        Event sourceEvent = eventServiceRepository.getById(eventId);
+        Event eventEdit = customerMapper.updateEventFromUpdateEventUserRequest(event, sourceEvent);
+        eventEdit.setId(eventId);
+        if (eventEdit.getStateAction().equals("CANCEL_REVIEW")) {
+            eventEdit.setStateAction("CANCELED");
+        }
+        return eventMapper.eventToEventFullDto(eventServiceRepository.save(eventEdit));
     }
 
     @Override
@@ -53,9 +62,12 @@ public class EventServiceImpl implements EventService {
                 .map(x -> requestMapper.RequestToParticipationRequestDto(x)).collect(Collectors.toList());
     }
 
+    @Transactional
     @Override
-    public EventRequestStatusUpdateResult editRequests(long userId, long eventId, RequestRqDto requestRqDto) {
+    public EventRequestStatusUpdateResult editRequests(long userId, long eventId, EventRequestStatusUpdateRequest requestRqDto) {
+
         requestsRepository.saveAllStatus(eventId, requestRqDto.getRequestIds(), requestRqDto.getStatus());
+
         EventRequestStatusUpdateResult eventRequestStatusUpdateResult = new EventRequestStatusUpdateResult();
         eventRequestStatusUpdateResult.setConfirmedRequests(
                 requestsRepository.getRequestsByEventIdAndStatus("CONFIRMED", eventId)

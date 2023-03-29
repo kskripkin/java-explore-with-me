@@ -44,9 +44,9 @@ public class EventController {
     }
 
     @PatchMapping("/{userId}/events/{eventId}")
-    public UpdateEventUserRequest editEvent(@PathVariable long userId,
+    public EventFullDto editEvent(@PathVariable long userId,
                               @PathVariable long eventId,
-                              @RequestBody Event event
+                              @RequestBody UpdateEventUserRequest event
     ) {
         log.info("PATCH /users/{}/event/{} {}", userId, eventId, event);
         return eventService.editEvent(userId, eventId, event);
@@ -63,7 +63,7 @@ public class EventController {
     @PatchMapping("/{userId}/events/{eventId}/requests")
     public EventRequestStatusUpdateResult editRequests(@PathVariable long userId,
                                      @PathVariable long eventId,
-                                     @RequestBody RequestRqDto requestRqDto
+                                     @RequestBody EventRequestStatusUpdateRequest requestRqDto
     ) {
         log.info("PATCH /users/{}/event/{}/requests {}", userId, eventId, requestRqDto);
         return eventService.editRequests(userId, eventId, requestRqDto);

@@ -23,11 +23,11 @@ public class UpdateEventUserRequest {
 
     Location location;
 
-    boolean paid;
+    Boolean paid;
 
-    long participantLimit;
+    Long participantLimit;
 
-    boolean requestModeration;
+    Boolean requestModeration;
 
     String stateAction;
 

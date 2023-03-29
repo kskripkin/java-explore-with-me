@@ -23,7 +23,7 @@ public class CompilationsMapper {
                 compilation.getId(),
                 eventRepository.getEvents(compilation.getId())
                         .stream()
-                        .map(x -> eventMapper.EventToEventShortDto(x))
+                        .map(x -> eventMapper.eventToEventShortDto(x))
                         .collect(Collectors.toList()),
                 compilation.isPinned(),
                 compilation.getTitle()

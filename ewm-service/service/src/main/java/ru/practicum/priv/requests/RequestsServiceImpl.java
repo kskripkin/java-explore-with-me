@@ -59,6 +59,7 @@ public class RequestsServiceImpl implements RequestsService {
     @Override
     public ParticipationRequestDto cancelRequests(Long userId, Long requestId) {
         Request request = requestsRepository.getById(requestId);
+        request.setStatus("CANCELED");
         requestsRepository.deleteById(requestId);
         return requestMapper.RequestToParticipationRequestDto(request);
     }
