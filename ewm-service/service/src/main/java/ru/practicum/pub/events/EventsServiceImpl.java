@@ -9,6 +9,7 @@ import ru.practicum.model.events.Event;
 import ru.practicum.model.events.EventFullDto;
 import ru.practicum.model.events.EventShortDto;
 import ru.practicum.priv.events.EventServiceRepository;
+import ru.practicum.validation.ValidateEvents;
 
 import java.util.List;
 import java.util.stream.Collectors;
@@ -20,8 +21,11 @@ public class EventsServiceImpl implements EventsService {
     private final EventServiceRepository eventRepository;
     private final EventMapper eventMapper;
 
+    private final ValidateEvents validateEvents;
+
     @Override
     public List<EventShortDto> getEvents(String text, String[] categories, boolean paid, String rangeStart, String rangeEnd, boolean onlyAvailable, String sort, Integer from, Integer size) {
+        validateEvents.getEvents(text, categories, paid, rangeStart, rangeEnd, onlyAvailable, sort, from, size);
         switch (sort) {
             case "EVENT_DATE":
                 if (onlyAvailable) {

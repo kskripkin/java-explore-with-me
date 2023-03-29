@@ -40,9 +40,11 @@ public class CompilationsMapper {
     public NewCompilationDto updateCompilationRequestToNewCompilationDto(UpdateCompilationRequest updateCompilationRequest) {
         return new NewCompilationDto(
               updateCompilationRequest.getEvents(),
-              updateCompilationRequest.isPinned(),
+              updateCompilationRequest.getPinned(),
               updateCompilationRequest.getTitle()
         );
     }
+
+
 
 }

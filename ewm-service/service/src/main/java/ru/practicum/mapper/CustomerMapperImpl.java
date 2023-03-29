@@ -4,6 +4,8 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
 import ru.practicum.admin.events.LocationsRepository;
+import ru.practicum.model.compilations.Compilation;
+import ru.practicum.model.compilations.UpdateCompilationRequest;
 import ru.practicum.model.events.Event;
 import ru.practicum.model.events.Location;
 import ru.practicum.model.events.UpdateEventAdminRequest;
@@ -103,5 +105,21 @@ public class CustomerMapperImpl {
         }
 
         return event;
+    }
+
+    public Compilation updateEventFromUpdateCompilationRequest(UpdateCompilationRequest updateCompilationRequest, Compilation compilation) {
+        if (updateCompilationRequest == null) {
+            return compilation;
+        }
+
+        if (updateCompilationRequest.getPinned() != null) {
+            compilation.setPinned(updateCompilationRequest.getPinned());
+        }
+        if (updateCompilationRequest.getTitle() != null) {
+            compilation.setTitle(updateCompilationRequest.getTitle());
+        }
+
+
+        return compilation;
     }
 }

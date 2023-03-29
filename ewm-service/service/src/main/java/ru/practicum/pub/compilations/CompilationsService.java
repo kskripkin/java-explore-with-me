@@ -12,6 +12,6 @@ public interface CompilationsService {
                                       Integer size
     );
 
-    CompilationDto getCompilation(Integer compId);
+    CompilationDto getCompilation(long compId);
 
 }

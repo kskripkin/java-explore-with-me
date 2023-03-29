@@ -24,7 +24,7 @@ public class CompilationsServiceImpl implements  CompilationsService {
     }
 
     @Override
-    public CompilationDto getCompilation(Integer compId) {
+    public CompilationDto getCompilation(long compId) {
         return compilationsMapper.compilationsToCompilationDto(
                 compilationRepository.getCompilations(compId)
         );

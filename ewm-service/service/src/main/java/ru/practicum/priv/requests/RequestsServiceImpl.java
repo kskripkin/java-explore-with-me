@@ -7,6 +7,8 @@ import ru.practicum.model.events.Event;
 import ru.practicum.model.request.ParticipationRequestDto;
 import ru.practicum.model.request.Request;
 import ru.practicum.pub.events.EventRepository;
+import ru.practicum.validation.ValidateEvents;
+import ru.practicum.validation.ValidateUsers;
 
 import java.time.LocalDateTime;
 import java.util.List;
@@ -20,9 +22,12 @@ public class RequestsServiceImpl implements RequestsService {
     private final EventRepository eventRepository;
     private final RequestMapper requestMapper;
 
+    private final ValidateUsers validateUsers;
+    private final ValidateEvents validateEvents;
+
     @Override
     public List<ParticipationRequestDto> getRequests(Long userId) {
-        System.out.println(requestsRepository.findAll());
+        validateUsers.findUser(userId);
         return requestsRepository.getByRequesterId(userId)
                 .stream()
                 .map(x -> requestMapper.RequestToParticipationRequestDto(x))
@@ -31,6 +36,8 @@ public class RequestsServiceImpl implements RequestsService {
 
     @Override
     public ParticipationRequestDto addRequests(Long userId, Long eventId) {
+        validateUsers.findUser(userId);
+        validateEvents.findEvent(eventId);
         Event event = eventRepository.getReferenceById(eventId);
         if (event.getRequestModeration()) {
             return requestMapper.RequestToParticipationRequestDto(
@@ -58,6 +65,7 @@ public class RequestsServiceImpl implements RequestsService {
 
     @Override
     public ParticipationRequestDto cancelRequests(Long userId, Long requestId) {
+        validateUsers.findUser(userId);
         Request request = requestsRepository.getById(requestId);
         request.setStatus("CANCELED");
         requestsRepository.deleteById(requestId);
