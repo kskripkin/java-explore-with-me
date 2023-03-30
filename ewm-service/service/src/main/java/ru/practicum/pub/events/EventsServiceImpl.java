@@ -5,10 +5,8 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 import ru.practicum.exception.model.ValidationException;
 import ru.practicum.mapper.EventMapper;
-import ru.practicum.model.events.Event;
 import ru.practicum.model.events.EventFullDto;
 import ru.practicum.model.events.EventShortDto;
-import ru.practicum.priv.events.EventServiceRepository;
 import ru.practicum.validation.ValidateEvents;
 
 import java.util.List;
@@ -18,7 +16,7 @@ import java.util.stream.Collectors;
 @RequiredArgsConstructor
 public class EventsServiceImpl implements EventsService {
 
-    private final EventServiceRepository eventRepository;
+    private final EventRepository eventRepository;
     private final EventMapper eventMapper;
 
     private final ValidateEvents validateEvents;

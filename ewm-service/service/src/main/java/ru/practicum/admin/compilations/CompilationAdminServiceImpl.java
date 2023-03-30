@@ -9,6 +9,7 @@ import ru.practicum.model.compilations.CompilationDto;
 import ru.practicum.model.compilations.NewCompilationDto;
 import ru.practicum.model.compilations.UpdateCompilationRequest;
 import ru.practicum.pub.compilations.CompilationRepository;
+import ru.practicum.validation.ValidateCompilations;
 
 import javax.transaction.Transactional;
 
@@ -21,10 +22,12 @@ public class CompilationAdminServiceImpl implements CompilationAdminService {
     private final CompilationsMapper compilationsMapper;
 
     private final CustomerMapperImpl customerMapper;
+    private final ValidateCompilations validateCompilations;
 
     @Transactional
     @Override
     public CompilationDto addCompilation(NewCompilationDto newCompilationDto) {
+        validateCompilations.validateObject(newCompilationDto);
         Compilation compilation = compilationRepository.save(compilationsMapper.newCompilationDtoToCompilation(newCompilationDto));
         for (Long eventId : newCompilationDto.getEvents()) {
             compilationRepository.saveEventsToCompilation(compilation.getId(), eventId);
@@ -36,6 +39,7 @@ public class CompilationAdminServiceImpl implements CompilationAdminService {
     @Transactional
     @Override
     public void deleteCompilation(Long compId) {
+        validateCompilations.findCompilation(compId);
         compilationRepository.deleteIdEventsToCompilation(compId);
         compilationRepository.deleteCompilation(compId);
     }

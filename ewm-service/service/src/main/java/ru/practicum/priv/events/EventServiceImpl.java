@@ -11,6 +11,9 @@ import ru.practicum.model.events.*;
 import ru.practicum.model.request.ParticipationRequestDto;
 import ru.practicum.model.request.RequestRqDto;
 import ru.practicum.priv.requests.RequestsRepository;
+import ru.practicum.pub.events.EventRepository;
+import ru.practicum.validation.ValidateCategories;
+import ru.practicum.validation.ValidateEvents;
 
 import java.util.List;
 import java.util.stream.Collectors;
@@ -19,40 +22,52 @@ import java.util.stream.Collectors;
 @RequiredArgsConstructor
 public class EventServiceImpl implements EventService {
 
-    private final EventServiceRepository eventServiceRepository;
+    private final EventRepository eventRepository;
+
     private final RequestsRepository requestsRepository;
+
     private final EventMapper eventMapper;
+
     private final RequestMapper requestMapper;
 
     private final CustomerMapperImpl customerMapper;
 
+    private final ValidateEvents validateEvents;
+
     @Override
     public List<EventShortDto> getEvents(long userId, Integer from, Integer size) {
-        return eventServiceRepository.getEvents(userId, PageRequest.of((from / size), size))
+        return eventRepository.getEvents(userId, PageRequest.of((from / size), size))
                 .stream()
                 .map(x -> eventMapper.eventToEventShortDto(x)).collect(Collectors.toList());
     }
 
     @Override
     public EventFullDto addEvent(long userId, NewEventDto newEventDto) {
-        Event event = eventServiceRepository.save(eventMapper.newEventDtoToEvent(userId, newEventDto));
+        validateEvents.validateObject(newEventDto);
+        validateEvents.validateDate(newEventDto.getEventDate());
+        Event event = eventRepository.save(eventMapper.newEventDtoToEvent(userId, newEventDto));
         return eventMapper.eventToEventFullDto(event);
     }
 
     @Override
     public EventFullDto getEvent(long userId, long eventId) {
-        return eventMapper.eventToEventFullDto(eventServiceRepository.getById(eventId));
+        return eventMapper.eventToEventFullDto(eventRepository.getById(eventId));
     }
 
     @Override
     public EventFullDto editEvent(long userId, long eventId, UpdateEventUserRequest event) {
-        Event sourceEvent = eventServiceRepository.getById(eventId);
+        validateEvents.validateDate(event.getEventDate());
+        validateEvents.validateIsPublished(eventId);
+        Event sourceEvent = eventRepository.getById(eventId);
         Event eventEdit = customerMapper.updateEventFromUpdateEventUserRequest(event, sourceEvent);
         eventEdit.setId(eventId);
         if (eventEdit.getStateAction().equals("CANCEL_REVIEW")) {
             eventEdit.setStateAction("CANCELED");
         }
-        return eventMapper.eventToEventFullDto(eventServiceRepository.save(eventEdit));
+        if (eventEdit.getStateAction().equals("SEND_TO_REVIEW")) {
+            eventEdit.setStateAction("PENDING");
+        }
+        return eventMapper.eventToEventFullDto(eventRepository.save(eventEdit));
     }
 
     @Override
@@ -65,7 +80,10 @@ public class EventServiceImpl implements EventService {
     @Transactional
     @Override
     public EventRequestStatusUpdateResult editRequests(long userId, long eventId, EventRequestStatusUpdateRequest requestRqDto) {
-
+        validateEvents.limitPeople(eventId);
+        Event event = eventRepository.getById(eventId);
+        event.setConfirmedRequests(event.getConfirmedRequests() + requestRqDto.getRequestIds().size());
+        eventRepository.save(event);
         requestsRepository.saveAllStatus(eventId, requestRqDto.getRequestIds(), requestRqDto.getStatus());
 
         EventRequestStatusUpdateResult eventRequestStatusUpdateResult = new EventRequestStatusUpdateResult();

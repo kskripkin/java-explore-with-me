@@ -13,4 +13,9 @@ public interface UserRepository extends JpaRepository<User, Long> {
             "from users " +
             "where id in (?1) ", nativeQuery = true)
     List<User> getUsers(Integer[] ids, Pageable pageable);
+
+    @Query(value = "select * " +
+            "from users " +
+            "where name = ?1 ", nativeQuery = true)
+    List<User> getUsersByName(String name);
 }

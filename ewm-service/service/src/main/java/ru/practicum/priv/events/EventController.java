@@ -6,7 +6,6 @@ import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 import ru.practicum.model.events.*;
 import ru.practicum.model.request.ParticipationRequestDto;
-import ru.practicum.model.request.RequestRqDto;
 
 import java.util.List;
 

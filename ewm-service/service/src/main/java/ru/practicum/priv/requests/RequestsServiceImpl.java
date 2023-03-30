@@ -8,6 +8,7 @@ import ru.practicum.model.request.ParticipationRequestDto;
 import ru.practicum.model.request.Request;
 import ru.practicum.pub.events.EventRepository;
 import ru.practicum.validation.ValidateEvents;
+import ru.practicum.validation.ValidateRequests;
 import ru.practicum.validation.ValidateUsers;
 
 import java.time.LocalDateTime;
@@ -19,11 +20,16 @@ import java.util.stream.Collectors;
 public class RequestsServiceImpl implements RequestsService {
 
     private final RequestsRepository requestsRepository;
+
     private final EventRepository eventRepository;
+
     private final RequestMapper requestMapper;
 
     private final ValidateUsers validateUsers;
+
     private final ValidateEvents validateEvents;
+
+    private final ValidateRequests validateRequests;
 
     @Override
     public List<ParticipationRequestDto> getRequests(Long userId) {
@@ -38,6 +44,10 @@ public class RequestsServiceImpl implements RequestsService {
     public ParticipationRequestDto addRequests(Long userId, Long eventId) {
         validateUsers.findUser(userId);
         validateEvents.findEvent(eventId);
+        validateRequests.validateRequestFromUser(userId, eventId);
+        validateRequests.validateUserOwnerEvent(userId, eventId);
+        validateRequests.validatePublishEvent(eventId);
+        validateRequests.validateLimitPeoples(eventId);
         Event event = eventRepository.getReferenceById(eventId);
         if (event.getRequestModeration()) {
             return requestMapper.RequestToParticipationRequestDto(

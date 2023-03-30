@@ -21,7 +21,7 @@ public class ExceptionHandler {
     @ResponseStatus(HttpStatus.BAD_REQUEST)
     public ApiError handleValidationException(final ValidationException e) {
         return new ApiError(
-                Collections.singletonList(Arrays.stream(e.getStackTrace()).iterator().toString()),
+                new ArrayList<>(List.of(e.toString().split("\n"))),
                 e.getMessage(),
                 "Incorrectly made request.",
                 HttpStatus.BAD_REQUEST.toString(),
@@ -31,26 +31,43 @@ public class ExceptionHandler {
 
     @org.springframework.web.bind.annotation.ExceptionHandler
     @ResponseStatus(HttpStatus.NOT_FOUND)
-    public ErrorResponse handleUserNotFoundException(final NotFoundException e) {
-        return new ErrorResponse(
-                e.getMessage()
+    public ApiError handleUserNotFoundException(final NotFoundException e) {
+        return new ApiError(
+                new ArrayList<>(List.of(e.toString().split("\n"))),
+                e.getMessage(),
+                "For the requested operation the conditions are not met.",
+                HttpStatus.NOT_FOUND.toString(),
+                LocalDateTime.now()
         );
     }
 
     @org.springframework.web.bind.annotation.ExceptionHandler
     @ResponseStatus(HttpStatus.CONFLICT)
-    public ErrorResponse handleConflictException(final ConflictException e) {
-        return new ErrorResponse(
-                e.getMessage()
+    public ApiError handleConflictException(final ConflictException e) {
+        return new ApiError(
+                new ArrayList<>(List.of(e.toString().split("\n"))),
+                e.getMessage(),
+                "For the requested operation the conditions are not met.",
+                HttpStatus.CONFLICT.toString(),
+                LocalDateTime.now()
         );
     }
 
     @org.springframework.web.bind.annotation.ExceptionHandler
     @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
-    public ResponseEntity<String> handleThrowable(final Throwable e) {
+//    public ResponseEntity<String> handleThrowable(final Throwable e) {
+    public ApiError handleThrowable(final Throwable e) {
         log.error("Unexpected error: " + e.getMessage());
-        return ResponseEntity
-                .status(HttpStatus.INTERNAL_SERVER_ERROR)
-                .body("Unexpected error: " + e.getMessage());
+//        return ResponseEntity
+//                .status(HttpStatus.INTERNAL_SERVER_ERROR)
+//                .body("Unexpected error: " + e.getMessage());
+//    }
+        return new ApiError(
+                new ArrayList<>(List.of(e.toString().split("\n"))),
+                e.getMessage(),
+                "For the requested operation the conditions are not met.",
+                HttpStatus.INTERNAL_SERVER_ERROR.toString(),
+                LocalDateTime.now()
+        );
     }
 }

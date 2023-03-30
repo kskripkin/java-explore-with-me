@@ -4,6 +4,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 import ru.practicum.model.users.User;
+import ru.practicum.validation.ValidateUsers;
 
 import java.util.List;
 
@@ -13,6 +14,8 @@ public class UserAdminServiceImpl implements UserAdminService {
 
     private final UserRepository userRepository;
 
+    private final ValidateUsers validateUsers;
+
     @Override
     public List<User> getUsers(Integer[] ids, Integer from, Integer size) {
         return userRepository.getUsers(ids, PageRequest.of((from / size), size));
@@ -20,6 +23,8 @@ public class UserAdminServiceImpl implements UserAdminService {
 
     @Override
     public User addUser(User user) {
+        validateUsers.validateObject(user);
+        validateUsers.validateUniqueName(user);
         return userRepository.save(user);
     }
 

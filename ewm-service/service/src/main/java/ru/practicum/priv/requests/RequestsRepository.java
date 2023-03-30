@@ -36,4 +36,9 @@ public interface RequestsRepository extends JpaRepository<Request, Long> {
             "where r.requester = ?1 and e.initiator != ?1 ", nativeQuery = true)
     List<Request> getByRequesterId(long userId);
 
+    @Query(value = "select * " +
+            "from requests " +
+            "where requester = ?1 and event = ?2 ", nativeQuery = true)
+    List<Request> getRequestFromUserByEvent(long userId, long eventId);
+
 }

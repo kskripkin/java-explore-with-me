@@ -54,9 +54,9 @@ public class CustomerMapperImpl {
         if ( updateEventAdminRequest.getPaid() != null ) {
             event.setRequestModeration( updateEventAdminRequest.getRequestModeration() );
         }
-        if ( updateEventAdminRequest.getStateAction() != null ) {
-            event.setStateAction( updateEventAdminRequest.getStateAction() );
-        }
+//        if ( updateEventAdminRequest.getStateAction() != null ) {
+//            event.setStateAction( updateEventAdminRequest.getStateAction() );
+//        }
         if ( updateEventAdminRequest.getTitle() != null ) {
             event.setTitle( updateEventAdminRequest.getTitle() );
         }
