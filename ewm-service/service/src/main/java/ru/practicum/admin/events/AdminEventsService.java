@@ -7,9 +7,9 @@ import java.util.List;
 
 public interface AdminEventsService {
 
-    List<EventFullDto> getEvents(String[] users,
+    List<EventFullDto> getEvents(Long[] users,
                                  String[] states,
-                                 String[] categories,
+                                 Long[] categories,
                                  String rangeStart,
                                  String rangeEnd,
                                  Integer from,

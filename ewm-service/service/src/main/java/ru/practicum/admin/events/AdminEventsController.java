@@ -6,6 +6,7 @@ import org.springframework.web.bind.annotation.*;
 import ru.practicum.model.events.EventFullDto;
 import ru.practicum.model.events.UpdateEventAdminRequest;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 @Slf4j
@@ -17,9 +18,9 @@ public class AdminEventsController {
     private final AdminEventsService adminEventsService;
 
     @GetMapping
-    public List<EventFullDto> getEvents(@RequestParam(value= "users", required = false) String[] users,
+    public List<EventFullDto> getEvents(@RequestParam(value= "users", required = false) Long[] users,
                                         @RequestParam(value= "states", required = false) String[] states,
-                                        @RequestParam(value= "categories", required = false) String[] categories,
+                                        @RequestParam(value= "categories", required = false) Long[] categories,
                                         @RequestParam(value= "rangeStart", required = false) String rangeStart,
                                         @RequestParam(value= "rangeEnd", required = false) String rangeEnd,
                                         @RequestParam(name = "from", required = false, defaultValue = "0") Integer from,

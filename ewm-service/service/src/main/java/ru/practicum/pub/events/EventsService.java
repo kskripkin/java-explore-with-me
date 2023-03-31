@@ -8,7 +8,7 @@ import java.util.List;
 public interface EventsService {
 
     List<EventShortDto> getEvents(String text,
-                                  String[] categories,
+                                  Long[] categories,
                                   boolean paid,
                                   String rangeStart,
                                   String rangeEnd,

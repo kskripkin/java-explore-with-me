@@ -23,7 +23,7 @@ public class EventsController {
 
     @GetMapping
     public List<EventShortDto> getEvents(@RequestParam(value= "text", required = false, defaultValue = "") String text,
-                                         @RequestParam(value= "categories", required = false) String[] categories,
+                                         @RequestParam(value= "categories", required = false) Long[] categories,
                                          @RequestParam(value= "paid", required = false, defaultValue = "false") boolean paid,
                                          @RequestParam(value= "rangeStart", required = false, defaultValue = "1900-01-01 00:00:00") String rangeStart,
                                          @RequestParam(value= "rangeEnd", required = false, defaultValue = "2900-01-01 00:00:00") String rangeEnd,

@@ -18,10 +18,6 @@ public class ValidateEvents {
 
     private final EventRepository eventRepository;
 
-    public void getEvents(String text, String[] categories, boolean paid, String rangeStart, String rangeEnd, boolean onlyAvailable, String sort, Integer from, Integer size) {
-
-    }
-
     public void findEvent(Long eventId) {
         if (eventId == null || eventId == 0) {
             throw new ValidationException("eventId not found");
