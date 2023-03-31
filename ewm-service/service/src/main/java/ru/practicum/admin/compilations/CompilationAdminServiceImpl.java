@@ -13,7 +13,6 @@ import ru.practicum.validation.ValidateCompilations;
 
 import javax.transaction.Transactional;
 
-
 @Service
 @RequiredArgsConstructor
 public class CompilationAdminServiceImpl implements CompilationAdminService {

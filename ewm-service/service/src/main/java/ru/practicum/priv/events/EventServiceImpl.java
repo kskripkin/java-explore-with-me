@@ -9,10 +9,8 @@ import ru.practicum.mapper.EventMapper;
 import ru.practicum.mapper.RequestMapper;
 import ru.practicum.model.events.*;
 import ru.practicum.model.request.ParticipationRequestDto;
-import ru.practicum.model.request.RequestRqDto;
 import ru.practicum.priv.requests.RequestsRepository;
 import ru.practicum.pub.events.EventRepository;
-import ru.practicum.validation.ValidateCategories;
 import ru.practicum.validation.ValidateEvents;
 
 import java.util.List;

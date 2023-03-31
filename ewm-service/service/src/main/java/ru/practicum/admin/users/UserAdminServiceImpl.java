@@ -25,6 +25,7 @@ public class UserAdminServiceImpl implements UserAdminService {
     public User addUser(User user) {
         validateUsers.validateObject(user);
         validateUsers.validateUniqueName(user);
+
         return userRepository.save(user);
     }
 

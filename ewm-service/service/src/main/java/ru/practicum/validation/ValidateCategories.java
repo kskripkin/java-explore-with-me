@@ -10,8 +10,6 @@ import ru.practicum.model.categories.Category;
 import ru.practicum.pub.categories.CategoriesRepository;
 import ru.practicum.pub.events.EventRepository;
 
-import java.util.Optional;
-
 @Slf4j
 @RequiredArgsConstructor
 @Component

@@ -10,7 +10,6 @@ import ru.practicum.pub.events.EventRepository;
 
 import java.util.stream.Collectors;
 
-
 @Component
 @RequiredArgsConstructor
 public class CompilationsMapper {

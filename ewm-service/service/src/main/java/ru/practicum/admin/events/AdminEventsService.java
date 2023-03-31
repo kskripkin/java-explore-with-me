@@ -1,7 +1,5 @@
 package ru.practicum.admin.events;
 
-import ru.practicum.model.events.EventDto;
-import ru.practicum.model.events.Event;
 import ru.practicum.model.events.EventFullDto;
 import ru.practicum.model.events.UpdateEventAdminRequest;
 

@@ -1,7 +1,6 @@
 package ru.practicum.mapper;
 
 import lombok.RequiredArgsConstructor;
-import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
 import ru.practicum.admin.events.LocationsRepository;
 import ru.practicum.model.compilations.Compilation;

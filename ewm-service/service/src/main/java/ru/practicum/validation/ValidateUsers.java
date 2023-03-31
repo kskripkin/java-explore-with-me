@@ -7,7 +7,6 @@ import ru.practicum.admin.users.UserRepository;
 import ru.practicum.exception.model.ConflictException;
 import ru.practicum.exception.model.NotFoundException;
 import ru.practicum.exception.model.ValidationException;
-import ru.practicum.model.categories.Category;
 import ru.practicum.model.users.User;
 
 @Slf4j

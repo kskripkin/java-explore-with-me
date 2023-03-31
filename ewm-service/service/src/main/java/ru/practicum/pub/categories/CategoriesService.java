@@ -1,7 +1,6 @@
 package ru.practicum.pub.categories;
 
 import ru.practicum.model.categories.Category;
-import ru.practicum.model.compilations.Compilation;
 
 import java.util.List;
 

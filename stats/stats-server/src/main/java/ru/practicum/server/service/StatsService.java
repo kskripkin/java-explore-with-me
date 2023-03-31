@@ -11,7 +11,7 @@ public interface StatsService {
 
     List<ViewStats> stats(String start,
                           String end,
-                          String[] uris,
+                          List<String> uris,
                           boolean unique
     );
 }

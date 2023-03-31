@@ -5,9 +5,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
 import ru.practicum.exception.model.NotFoundException;
 import ru.practicum.exception.model.ValidationException;
-import ru.practicum.model.categories.Category;
 import ru.practicum.model.compilations.NewCompilationDto;
-import ru.practicum.pub.categories.CategoriesRepository;
 import ru.practicum.pub.compilations.CompilationRepository;
 
 @Slf4j

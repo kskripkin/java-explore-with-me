@@ -7,7 +7,6 @@ import ru.practicum.exception.model.ConflictException;
 import ru.practicum.exception.model.ValidationException;
 import ru.practicum.model.events.Event;
 import ru.practicum.model.events.NewEventDto;
-import ru.practicum.model.events.UpdateEventAdminRequest;
 import ru.practicum.pub.events.EventRepository;
 
 import java.time.LocalDateTime;

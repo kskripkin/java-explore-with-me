@@ -5,6 +5,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.*;
 import ru.practicum.model.categories.Category;
 
+import javax.servlet.http.HttpServletRequest;
 import java.util.List;
 
 @Slf4j
@@ -17,7 +18,8 @@ public class CategoriesController {
 
     @GetMapping
     public List<Category> getCategories(@RequestParam(name = "from", required = false, defaultValue = "0") Integer from,
-                                        @RequestParam(value= "size", required = false, defaultValue = "10") Integer size
+                                        @RequestParam(value= "size", required = false, defaultValue = "10") Integer size,
+                                        HttpServletRequest request
     ) {
         log.info("GET /categories?from={}&size={}", from, size);
         return categoriesService.getCategories(from, size);
