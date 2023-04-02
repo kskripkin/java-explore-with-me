@@ -2,32 +2,23 @@ package ru.practicum.mapper;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
-import ru.practicum.admin.events.LocationsRepository;
 import ru.practicum.model.compilations.Compilation;
 import ru.practicum.model.compilations.UpdateCompilationRequest;
 import ru.practicum.model.events.Event;
-import ru.practicum.model.events.Location;
 import ru.practicum.model.events.UpdateEventAdminRequest;
 import ru.practicum.model.events.UpdateEventUserRequest;
 
 @Service
 @RequiredArgsConstructor
-public class CustomerMapperImpl {
+public class CustomerMapper {
 
-    private final LocationsRepository locationsRepository;
-
-
-    public Event updateEventFromUpdateEventAdminRequest(UpdateEventAdminRequest updateEventAdminRequest, Event event) {
+    public Event updateEventFromUpdateEventAdminRequest(UpdateEventAdminRequest updateEventAdminRequest, Event event, long locationId) {
         if (updateEventAdminRequest == null) {
             return event;
         }
 
         if (updateEventAdminRequest.getLocation() != null) {
-            locationsRepository.save(new Location(
-                    event.getLocation(),
-                    updateEventAdminRequest.getLocation().getLat(),
-                    updateEventAdminRequest.getLocation().getLon()
-            ));
+            event.setLocation(locationId);
         }
         if ( updateEventAdminRequest.getId() != 0 ) {
             event.setId( updateEventAdminRequest.getId() );
@@ -53,9 +44,6 @@ public class CustomerMapperImpl {
         if ( updateEventAdminRequest.getPaid() != null ) {
             event.setRequestModeration( updateEventAdminRequest.getRequestModeration() );
         }
-//        if ( updateEventAdminRequest.getStateAction() != null ) {
-//            event.setStateAction( updateEventAdminRequest.getStateAction() );
-//        }
         if ( updateEventAdminRequest.getTitle() != null ) {
             event.setTitle( updateEventAdminRequest.getTitle() );
         }
@@ -63,17 +51,13 @@ public class CustomerMapperImpl {
         return event;
     }
 
-    public Event updateEventFromUpdateEventUserRequest(UpdateEventUserRequest updateEventAdminRequest, Event event) {
+    public Event updateEventFromUpdateEventUserRequest(UpdateEventUserRequest updateEventAdminRequest, Event event, long locationId) {
         if (updateEventAdminRequest == null) {
             return event;
         }
 
         if (updateEventAdminRequest.getLocation() != null) {
-            locationsRepository.save(new Location(
-                    event.getLocation(),
-                    updateEventAdminRequest.getLocation().getLat(),
-                    updateEventAdminRequest.getLocation().getLon()
-            ));
+            event.setLocation(locationId);
         }
         if ( updateEventAdminRequest.getAnnotation() != null ) {
             event.setAnnotation( updateEventAdminRequest.getAnnotation() );

@@ -32,7 +32,7 @@ CREATE TABLE IF NOT EXISTS events (
                                      participant_limit BIGINT,
                                      published_on TIMESTAMP,
                                      request_moderation BOOLEAN,
-                                     state_action VARCHAR(50),
+                                     state_action VARCHAR(50) NOT NULL,
                                      title VARCHAR(200),
                                      views BIGINT,
                                      CONSTRAINT pk_events PRIMARY KEY (id),

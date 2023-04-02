@@ -52,13 +52,8 @@ public class ExceptionHandler {
 
     @org.springframework.web.bind.annotation.ExceptionHandler
     @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
-//    public ResponseEntity<String> handleThrowable(final Throwable e) {
     public ApiError handleThrowable(final Throwable e) {
         log.error("Unexpected error: " + e.getMessage());
-//        return ResponseEntity
-//                .status(HttpStatus.INTERNAL_SERVER_ERROR)
-//                .body("Unexpected error: " + e.getMessage());
-//    }
         return new ApiError(
                 new ArrayList<>(List.of(e.toString().split("\n"))),
                 e.getMessage(),

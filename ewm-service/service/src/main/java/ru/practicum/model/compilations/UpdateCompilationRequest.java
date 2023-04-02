@@ -11,9 +11,9 @@ import java.util.List;
 @NoArgsConstructor
 public class UpdateCompilationRequest {
 
-    List<Long> events;
+    private List<Long> events;
 
-    Boolean pinned;
+    private Boolean pinned;
 
-    String title;
+    private String title;
 }

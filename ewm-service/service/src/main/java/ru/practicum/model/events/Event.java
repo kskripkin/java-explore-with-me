@@ -19,43 +19,43 @@ public class Event {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    long id;
+    private long id;
 
     private String annotation;
 
-    long category;
+    private long category;
 
     @Column(name = "confirmed_requests")
-    long confirmedRequests;
+    private long confirmedRequests;
 
     @Column(name = "created_on")
-    LocalDateTime createdOn;
+    private LocalDateTime createdOn;
 
-    String description;
+    private String description;
 
     @Column(name = "event_date")
     @JsonFormat(shape=JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd HH:mm:ss")
-    LocalDateTime eventDate;
+    private LocalDateTime eventDate;
 
-    long initiator;
+    private long initiator;
 
-    long location;
+    private long location;
 
-    Boolean paid;
+    private Boolean paid;
 
     @Column(name = "participant_limit")
-    long participantLimit;
+    private long participantLimit;
 
     @Column(name = "published_on")
-    LocalDateTime publishedOn;
+    private LocalDateTime publishedOn;
 
     @Column(name = "request_moderation")
-    Boolean requestModeration;
+    private Boolean requestModeration;
 
     @Column(name = "state_action")
-    String stateAction;
+    private String stateAction;
 
-    String title;
+    private String title;
 
-    long views;
+    private long views;
 }

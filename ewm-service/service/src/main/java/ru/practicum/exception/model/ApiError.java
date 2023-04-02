@@ -12,13 +12,13 @@ import java.util.List;
 @AllArgsConstructor
 public class ApiError {
 
-    List<String> errors;
+    private List<String> errors;
 
-    String message;
+    private String message;
 
-    String reason;
+    private String reason;
 
-    String status;
+    private String status;
 
-    LocalDateTime timestamp;
+    private LocalDateTime timestamp;
 }

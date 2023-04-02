@@ -14,24 +14,24 @@ import java.time.LocalDateTime;
 @NoArgsConstructor
 public class EventShortDto {
 
-    long id;
+    private long id;
 
-    String annotation;
+    private String annotation;
 
-    Category category;
+    private Category category;
 
-    long confirmedRequests;
+    private long confirmedRequests;
 
     @JsonFormat(shape=JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd HH:mm:ss")
-    LocalDateTime eventDate;
+    private LocalDateTime eventDate;
 
-    User initiator;
+    private User initiator;
 
-    Location location;
+    private Location location;
 
-    boolean paid;
+    private boolean paid;
 
-    String title;
+    private String title;
 
-    long views;
+    private long views;
 }

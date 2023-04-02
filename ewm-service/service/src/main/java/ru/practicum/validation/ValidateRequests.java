@@ -30,7 +30,7 @@ public class ValidateRequests {
     }
 
     public void validatePublishEvent(long eventId) {
-        if (!eventRepository.getById(eventId).getStateAction().equals("PUBLISHED")) {
+        if (!"PUBLISHED".equals(eventRepository.getById(eventId).getStateAction())) {
             throw new ConflictException("Event not published");
         }
     }

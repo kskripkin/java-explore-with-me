@@ -11,8 +11,8 @@ import java.util.List;
 @NoArgsConstructor
 public class RequestRsDto {
 
-    List<ConfirmedRequests> confirmedRequests;
+    private List<ConfirmedRequests> confirmedRequests;
 
-    List<RejectedRequests> rejectedRequests;
+    private List<RejectedRequests> rejectedRequests;
 
 }

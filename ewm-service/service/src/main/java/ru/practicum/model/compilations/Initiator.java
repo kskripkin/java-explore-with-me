@@ -9,7 +9,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public class Initiator {
 
-    int id;
+    private int id;
 
-    String name;
+    private String name;
 }

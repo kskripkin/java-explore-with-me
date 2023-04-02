@@ -12,24 +12,24 @@ import java.time.LocalDateTime;
 @NoArgsConstructor
 public class UpdateEventUserRequest {
 
-    String annotation;
+    private String annotation;
 
-    long category;
+    private long category;
 
-    String description;
+    private String description;
 
     @JsonFormat(shape=JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd HH:mm:ss")
-    LocalDateTime eventDate;
+    private LocalDateTime eventDate;
 
-    Location location;
+    private Location location;
 
-    Boolean paid;
+    private Boolean paid;
 
-    Long participantLimit;
+    private Long participantLimit;
 
-    Boolean requestModeration;
+    private Boolean requestModeration;
 
-    String stateAction;
+    private String stateAction;
 
-    String title;
+    private String title;
 }

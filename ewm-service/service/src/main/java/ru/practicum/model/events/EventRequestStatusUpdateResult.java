@@ -12,7 +12,7 @@ import java.util.List;
 @NoArgsConstructor
 public class EventRequestStatusUpdateResult {
 
-    List<ParticipationRequestDto> confirmedRequests;
+    private List<ParticipationRequestDto> confirmedRequests;
 
-    List<ParticipationRequestDto> rejectedRequests;
+    private List<ParticipationRequestDto> rejectedRequests;
 }

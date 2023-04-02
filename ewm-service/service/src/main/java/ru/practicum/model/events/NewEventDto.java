@@ -12,22 +12,22 @@ import java.time.LocalDateTime;
 @NoArgsConstructor
 public class NewEventDto {
 
-    String annotation;
+    private String annotation;
 
-    Long category;
+    private Long category;
 
-    String description;
+    private String description;
 
     @JsonFormat(shape=JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd HH:mm:ss")
-    LocalDateTime eventDate;
+    private LocalDateTime eventDate;
 
-    Location location;
+    private Location location;
 
-    boolean paid;
+    private boolean paid;
 
-    Long participantLimit;
+    private Long participantLimit;
 
-    boolean requestModeration;
+    private boolean requestModeration;
 
-    String title;
+    private String title;
 }

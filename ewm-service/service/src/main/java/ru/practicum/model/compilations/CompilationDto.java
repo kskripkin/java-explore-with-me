@@ -12,11 +12,11 @@ import java.util.List;
 @NoArgsConstructor
 public class CompilationDto {
 
-    long id;
+    private long id;
 
-    List<EventShortDto> events;
+    private List<EventShortDto> events;
 
-    boolean pinned;
+    private boolean pinned;
 
-    String title;
+    private String title;
 }

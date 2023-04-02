@@ -3,10 +3,10 @@ package ru.practicum.pub.events;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.*;
+import ru.practicum.client.StatsClient;
 import ru.practicum.model.EndpointHit;
 import ru.practicum.model.events.EventFullDto;
 import ru.practicum.model.events.EventShortDto;
-import ru.practicum.service.HttpService;
 
 import javax.servlet.http.HttpServletRequest;
 import java.util.List;
@@ -19,7 +19,7 @@ public class EventsController {
 
     private final EventsService eventsService;
 
-    private final HttpService httpService;
+    private final StatsClient statsClient;
 
     @GetMapping
     public List<EventShortDto> getEvents(@RequestParam(value= "text", required = false, defaultValue = "") String text,
@@ -35,7 +35,7 @@ public class EventsController {
         log.info("GET /events?text={}&categories={}&paid={}&rangeStart={}&rangeEnd={}&onlyAvailable={}&sort={}&from={}&size={}",
                 text, categories, paid, rangeStart, rangeEnd, onlyAvailable, sort, from, size);
         List<EventShortDto> returnedList = eventsService.getEvents(text, categories, paid, rangeStart, rangeEnd, onlyAvailable, sort, from, size);
-        httpService.hit(new EndpointHit("ewm-service", request.getRequestURI(), request.getRemoteAddr()));
+        statsClient.hit(new EndpointHit("ewm-service", request.getRequestURI(), request.getRemoteAddr()));
         return returnedList;
     }
 
@@ -44,7 +44,7 @@ public class EventsController {
                                   HttpServletRequest request) {
         log.info("PATCH /events/{}", eventId);
         EventFullDto returnedEventFullDto = eventsService.editEvent(eventId);
-        httpService.hit(new EndpointHit("ewm-service", request.getRequestURI(), request.getRemoteAddr()));
+        statsClient.hit(new EndpointHit("ewm-service", request.getRequestURI(), request.getRemoteAddr()));
         return returnedEventFullDto;
     }
 }

@@ -4,7 +4,9 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 import ru.practicum.admin.events.LocationsRepository;
 import ru.practicum.admin.users.UserRepository;
+import ru.practicum.model.categories.Category;
 import ru.practicum.model.events.*;
+import ru.practicum.model.users.User;
 import ru.practicum.pub.categories.CategoriesRepository;
 
 import java.time.LocalDateTime;
@@ -17,7 +19,7 @@ public class EventMapper {
     private final UserRepository userRepository;
     private final LocationsRepository locationsRepository;
 
-    public EventShortDto eventToEventShortDto(Event event) {
+    public EventShortDto eventToEventShortDto(Event event, Category category, User initiator, Location location) {
         return new EventShortDto(
                 event.getId(),
                 event.getAnnotation(),
@@ -31,30 +33,17 @@ public class EventMapper {
                 event.getViews());
     }
 
-    public NewEventDto eventToNewEventDto(Event event) {
-        return new NewEventDto(
-                event.getAnnotation(),
-                event.getCategory(),
-                event.getDescription(),
-                event.getEventDate(),
-                locationsRepository.getById(event.getLocation()),
-                event.getPaid(),
-                event.getParticipantLimit(),
-                event.getRequestModeration(),
-                event.getTitle());
-    }
-
-    public EventFullDto eventToEventFullDto(Event event) {
+    public EventFullDto eventToEventFullDto(Event event, Category category, User initiator, Location location) {
         return new EventFullDto(
                 event.getId(),
                 event.getAnnotation(),
-                categoriesRepository.getById(event.getCategory()),
+                category,
                 event.getConfirmedRequests(),
                 event.getCreatedOn(),
                 event.getDescription(),
                 event.getEventDate(),
-                userRepository.getById(event.getInitiator()),
-                locationsRepository.getById(event.getLocation()),
+                initiator,
+                location,
                 event.getPaid(),
                 event.getParticipantLimit(),
                 event.getPublishedOn(),
@@ -64,21 +53,7 @@ public class EventMapper {
                 event.getViews());
     }
 
-    public UpdateEventUserRequest eventToUpdateEventUserRequest(Event event) {
-        return new UpdateEventUserRequest(
-                event.getAnnotation(),
-                event.getCategory(),
-                event.getDescription(),
-                event.getEventDate(),
-                locationsRepository.getById(event.getLocation()),
-                event.getPaid(),
-                event.getParticipantLimit(),
-                event.getRequestModeration(),
-                event.getStateAction(),
-                event.getTitle());
-    }
-
-    public Event newEventDtoToEvent(long userId, NewEventDto newEventDto) {
+    public Event newEventDtoToEvent(long userId, NewEventDto newEventDto, Location location) {
         return new Event(
                 0,
                 newEventDto.getAnnotation(),
@@ -88,7 +63,7 @@ public class EventMapper {
                 newEventDto.getDescription(),
                 newEventDto.getEventDate(),
                 userId,
-                locationsRepository.save(newEventDto.getLocation()).getId(),
+                location.getId(),
                 newEventDto.isPaid(),
                 newEventDto.getParticipantLimit(),
                 null,

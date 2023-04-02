@@ -19,19 +19,19 @@ public class Request {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    long id;
+    private long id;
 
     @Column(nullable = false)
     @JsonFormat(shape=JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd HH:mm:ss.SSSS")
-    LocalDateTime created;
+    private LocalDateTime created;
 
     @Column(nullable = false)
-    long event;
+    private long event;
 
     @Column(nullable = false)
-    long requester;
+    private long requester;
 
     @Column(nullable = false)
-    String status;
+    private String status;
 
 }

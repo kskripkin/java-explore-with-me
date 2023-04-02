@@ -31,7 +31,7 @@ public class ValidateEvents {
     }
 
     public void validateIsPublished(long eventId) {
-        if (eventRepository.getById(eventId).getStateAction().equals("PUBLISHED")) {
+        if ("PUBLISHED".equals(eventRepository.getById(eventId).getStateAction())) {
             throw new ConflictException("Event is PUBLISHED");
         }
     }
@@ -54,22 +54,33 @@ public class ValidateEvents {
 
     public void validatePublish(long eventId, String status) {
         String statusSource = eventRepository.getById(eventId).getStateAction();
-        if (statusSource.equals("PENDING")) {
+        if ("PENDING".equals(statusSource)) {
             return;
         }
         switch (status) {
             case "PUBLISH_EVENT":
-                if (statusSource.equals("PUBLISHED")) {
+                if ("PUBLISHED".equals(statusSource)) {
                     throw new ConflictException("Event state already PUBLISHED");
                 } else {
                     throw new ConflictException("Event state already CANCELED");
                 }
             case "REJECT_EVENT":
-                if (statusSource.equals("CANCELED")) {
+                if ("CANCELED".equals(statusSource)) {
                     throw new ConflictException("Event state already CANCELED");
                 } else {
                     throw new ConflictException("Event state already PUBLISHED");
                 }
+            default:
+                throw new ValidationException("Status not found");
+        }
+    }
+
+    public void validateFromAndSize(Integer from, Integer size) {
+        if (from < 0) {
+            throw new ValidationException("from < 0");
+        }
+        if (size < 1) {
+            throw new ValidationException("size < 1");
         }
     }
 }

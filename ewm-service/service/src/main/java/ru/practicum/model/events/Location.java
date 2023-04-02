@@ -17,11 +17,16 @@ public class Location {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    long id;
+    private long id;
 
     @Column(nullable = false)
-    String lat;
+    private String lat;
 
     @Column(nullable = false)
-    String lon;
+    private String lon;
+
+    public Location(String lat, String lon) {
+        this.lat = lat;
+        this.lon = lon;
+    }
 }

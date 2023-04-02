@@ -36,7 +36,7 @@ public class RequestsServiceImpl implements RequestsService {
         validateUsers.findUser(userId);
         return requestsRepository.getByRequesterId(userId)
                 .stream()
-                .map(x -> requestMapper.RequestToParticipationRequestDto(x))
+                .map(x -> requestMapper.requestToParticipationRequestDto(x))
                 .collect(Collectors.toList());
     }
 
@@ -50,7 +50,7 @@ public class RequestsServiceImpl implements RequestsService {
         validateRequests.validateLimitPeoples(eventId);
         Event event = eventRepository.getReferenceById(eventId);
         if (event.getRequestModeration()) {
-            return requestMapper.RequestToParticipationRequestDto(
+            return requestMapper.requestToParticipationRequestDto(
                     requestsRepository.save(new Request(
                             0,
                             LocalDateTime.now(),
@@ -69,7 +69,7 @@ public class RequestsServiceImpl implements RequestsService {
             ));
             event.setConfirmedRequests(event.getConfirmedRequests() + 1);
             eventRepository.save(event);
-            return requestMapper.RequestToParticipationRequestDto(request);
+            return requestMapper.requestToParticipationRequestDto(request);
         }
     }
 
@@ -79,6 +79,6 @@ public class RequestsServiceImpl implements RequestsService {
         Request request = requestsRepository.getById(requestId);
         request.setStatus("CANCELED");
         requestsRepository.deleteById(requestId);
-        return requestMapper.RequestToParticipationRequestDto(request);
+        return requestMapper.requestToParticipationRequestDto(request);
     }
 }

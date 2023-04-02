@@ -17,10 +17,10 @@ public class Compilation {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    long id;
+    private long id;
 
-    boolean pinned;
+    private boolean pinned;
 
-    String title;
+    private String title;
 
 }

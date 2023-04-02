@@ -11,13 +11,13 @@ import java.time.LocalDateTime;
 @NoArgsConstructor
 public class RejectedRequests {
 
-    LocalDateTime created;
+    private LocalDateTime created;
 
-    long event;
+    private long event;
 
-    long id;
+    private long id;
 
-    long requester;
+    private long requester;
 
-    String status;
+    private String status;
 }

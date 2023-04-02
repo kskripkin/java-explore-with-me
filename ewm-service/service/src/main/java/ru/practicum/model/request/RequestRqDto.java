@@ -11,7 +11,7 @@ import java.util.List;
 @NoArgsConstructor
 public class RequestRqDto {
 
-    List<Long> requestIds;
+    private List<Long> requestIds;
 
-    String status;
+    private String status;
 }
