@@ -2,12 +2,9 @@ package ru.practicum.mapper;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
-import ru.practicum.admin.events.LocationsRepository;
-import ru.practicum.admin.users.UserRepository;
 import ru.practicum.model.categories.Category;
 import ru.practicum.model.events.*;
 import ru.practicum.model.users.User;
-import ru.practicum.pub.categories.CategoriesRepository;
 
 import java.time.LocalDateTime;
 
@@ -15,19 +12,15 @@ import java.time.LocalDateTime;
 @RequiredArgsConstructor
 public class EventMapper {
 
-    private final CategoriesRepository categoriesRepository;
-    private final UserRepository userRepository;
-    private final LocationsRepository locationsRepository;
-
     public EventShortDto eventToEventShortDto(Event event, Category category, User initiator, Location location) {
         return new EventShortDto(
                 event.getId(),
                 event.getAnnotation(),
-                categoriesRepository.getById(event.getCategory()),
+                category,
                 event.getConfirmedRequests(),
                 event.getEventDate(),
-                userRepository.getById(event.getInitiator()),
-                locationsRepository.getById(event.getLocation()),
+                initiator,
+                location,
                 event.getPaid(),
                 event.getTitle(),
                 event.getViews());

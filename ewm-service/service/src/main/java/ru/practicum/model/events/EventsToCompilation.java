@@ -1,8 +1,14 @@
 package ru.practicum.model.events;
 
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
 
+@Data
+@AllArgsConstructor
+@NoArgsConstructor
 @Entity
 @Table(name = "events_to_compilation")
 public class EventsToCompilation {

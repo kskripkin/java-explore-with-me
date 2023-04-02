@@ -7,9 +7,11 @@ import ru.practicum.admin.users.UserRepository;
 import ru.practicum.exception.model.ValidationException;
 import ru.practicum.mapper.CustomerMapper;
 import ru.practicum.mapper.EventMapper;
+import ru.practicum.model.categories.Category;
 import ru.practicum.model.events.EventFullDto;
 import ru.practicum.model.events.UpdateEventAdminRequest;
 import ru.practicum.model.events.Event;
+import ru.practicum.model.users.User;
 import ru.practicum.pub.categories.CategoriesRepository;
 import ru.practicum.pub.events.EventRepository;
 import ru.practicum.validation.ValidateEvents;
@@ -41,26 +43,47 @@ public class AdminEventsServiceImpl implements AdminEventsService {
     private final ValidateEvents validateEvents;
 
     @Override
-    public List<EventFullDto> getEvents(Long[] users, String[] states, Long[] categories, String rangeStart, String rangeEnd, Integer from, Integer size) {
+    public List<EventFullDto> getEvents(List<Long> users, List<String> states, List<Long> categories, String rangeStart, String rangeEnd, Integer from, Integer size) {
         validateEvents.validateFromAndSize(from, size);
+        
         if (rangeStart == null && rangeEnd == null && states == null) {
-            return eventRepository.getEvents(users, categories, PageRequest.of((from / size), size))
-                    .stream().map(x -> eventMapper.eventToEventFullDto(
+            List<Event> eventList = eventRepository.getEvents(users, categories, PageRequest.of((from / size), size));
+
+            List<Category> categoryList = categoriesRepository.getAll(categories);
+
+            List<User> userList = userRepository.getAll(users);
+
+            List<Long> locationIdList = eventList.stream().map(x -> x.getLocation()).collect(Collectors.toList());
+            List<Location> locationList = locationsRepository.getAll(locationIdList);
+
+            return eventList
+                    .stream()
+                    .map(x -> eventMapper.eventToEventFullDto(
                             x,
-                            categoriesRepository.getById(x.getCategory()),
-                            userRepository.getById(x.getInitiator()),
-                            locationsRepository.getById(x.getLocation())
+                            categoryList.stream().filter(v -> v.getId() == x.getCategory()).findFirst().get(),
+                            userList.stream().filter(v -> v.getId() == x.getInitiator()).findFirst().get(),
+                            locationList.stream().filter(v -> v.getId() == x.getLocation()).findFirst().get()
 
                     )).collect(Collectors.toList());
         }
         LocalDateTime localDateTimeStartRange = LocalDateTime.parse(rangeStart, formatter);
         LocalDateTime localDateTimeEndRange = LocalDateTime.parse(rangeEnd, formatter);
-        return eventRepository.getEvents(users, states, categories, localDateTimeStartRange, localDateTimeEndRange, PageRequest.of((from / size), size))
+
+        List<Event> eventList = eventRepository.getEvents(users, states, categories, localDateTimeStartRange, localDateTimeEndRange, PageRequest.of((from / size), size));
+
+        List<Category> categoryList = categoriesRepository.getAll(categories);
+
+        List<User> userList = userRepository.getAll(users);
+
+        List<Long> locationIdList = eventList.stream().map(x -> x.getLocation()).collect(Collectors.toList());
+        List<Location> locationList = locationsRepository.getAll(locationIdList);
+
+        return eventList
                 .stream().map(x -> eventMapper.eventToEventFullDto(
                         x,
-                        categoriesRepository.getById(x.getCategory()),
-                        userRepository.getById(x.getInitiator()),
-                        locationsRepository.getById(x.getLocation())
+                        categoryList.stream().filter(v -> v.getId() == x.getCategory()).findFirst().get(),
+                        userList.stream().filter(v -> v.getId() == x.getInitiator()).findFirst().get(),
+                        locationList.stream().filter(v -> v.getId() == x.getLocation()).findFirst().get()
 
                 )).collect(Collectors.toList());
     }

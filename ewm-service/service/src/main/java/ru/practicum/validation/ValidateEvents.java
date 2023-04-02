@@ -77,10 +77,10 @@ public class ValidateEvents {
 
     public void validateFromAndSize(Integer from, Integer size) {
         if (from < 0) {
-            throw new ValidationException("from < 0");
+            throw new ValidationException("\"From\" can not be equal or less than 0");
         }
         if (size < 1) {
-            throw new ValidationException("size < 1");
+            throw new ValidationException("\"Size\" can not be equal or less than 1");
         }
     }
 }

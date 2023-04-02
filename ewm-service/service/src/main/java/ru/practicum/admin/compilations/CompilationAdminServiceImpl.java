@@ -7,6 +7,7 @@ import ru.practicum.admin.users.UserRepository;
 import ru.practicum.mapper.CompilationsMapper;
 import ru.practicum.mapper.CustomerMapper;
 import ru.practicum.mapper.EventMapper;
+import ru.practicum.model.categories.Category;
 import ru.practicum.model.compilations.Compilation;
 import ru.practicum.model.compilations.CompilationDto;
 import ru.practicum.model.compilations.NewCompilationDto;
@@ -14,6 +15,8 @@ import ru.practicum.model.compilations.UpdateCompilationRequest;
 import ru.practicum.model.events.Event;
 import ru.practicum.model.events.EventShortDto;
 import ru.practicum.model.events.EventsToCompilation;
+import ru.practicum.model.events.Location;
+import ru.practicum.model.users.User;
 import ru.practicum.pub.categories.CategoriesRepository;
 import ru.practicum.pub.compilations.CompilationRepository;
 import ru.practicum.pub.events.EventRepository;
@@ -59,12 +62,22 @@ public class CompilationAdminServiceImpl implements CompilationAdminService {
         }
         eventsCompilationRepository.saveAll(eventsToCompilationList);
         List<Event> eventList = eventRepository.getEvents(compilation.getId());
+
+        List<Long> categoryIdList = eventList.stream().map(x -> x.getCategory()).collect(Collectors.toList());
+        List<Category> categoryList = categoriesRepository.getAll(categoryIdList);
+
+        List<Long> userIdList = eventList.stream().map(x -> x.getInitiator()).collect(Collectors.toList());
+        List<User> userList = userRepository.getAll(userIdList);
+
+        List<Long> locationIdList = eventList.stream().map(x -> x.getLocation()).collect(Collectors.toList());
+        List<Location> locationList = locationsRepository.getAll(locationIdList);
+
         List<EventShortDto> eventShortDtoList = eventList.stream()
                 .map(x -> eventMapper.eventToEventShortDto(
                         x,
-                        categoriesRepository.getById(x.getCategory()),
-                        userRepository.getById(x.getInitiator()),
-                        locationsRepository.getById(x.getLocation())
+                        categoryList.stream().filter(v -> v.getId() == x.getCategory()).findFirst().get(),
+                        userList.stream().filter(v -> v.getId() == x.getInitiator()).findFirst().get(),
+                        locationList.stream().filter(v -> v.getId() == x.getLocation()).findFirst().get()
                 ))
                 .collect(Collectors.toList());
         return compilationsMapper.compilationsToCompilationDto(
@@ -93,12 +106,22 @@ public class CompilationAdminServiceImpl implements CompilationAdminService {
         }
         eventsCompilationRepository.saveAll(eventsToCompilationList);
         List<Event> eventList = eventRepository.getEvents(compId);
+
+        List<Long> categoryIdList = eventList.stream().map(x -> x.getCategory()).collect(Collectors.toList());
+        List<Category> categoryList = categoriesRepository.getAll(categoryIdList);
+
+        List<Long> userIdList = eventList.stream().map(x -> x.getInitiator()).collect(Collectors.toList());
+        List<User> userList = userRepository.getAll(userIdList);
+
+        List<Long> locationIdList = eventList.stream().map(x -> x.getLocation()).collect(Collectors.toList());
+        List<Location> locationList = locationsRepository.getAll(locationIdList);
+
         List<EventShortDto> eventShortDtoList = eventList.stream()
                 .map(x -> eventMapper.eventToEventShortDto(
                         x,
-                        categoriesRepository.getById(x.getCategory()),
-                        userRepository.getById(x.getInitiator()),
-                        locationsRepository.getById(x.getLocation())
+                        categoryList.stream().filter(v -> v.getId() == x.getCategory()).findFirst().get(),
+                        userList.stream().filter(v -> v.getId() == x.getInitiator()).findFirst().get(),
+                        locationList.stream().filter(v -> v.getId() == x.getLocation()).findFirst().get()
                 ))
                 .collect(Collectors.toList());
         return compilationsMapper.compilationsToCompilationDto(

@@ -12,4 +12,10 @@ public interface CategoriesRepository extends JpaRepository<Category, Long> {
             "from categories " +
             "where name = ?1 ", nativeQuery = true)
     List<Category> getCategoryByName(String name);
+
+    @Query(value = "select * " +
+            "from categories " +
+            "where id in (?1) ", nativeQuery = true)
+    List<Category> getAll(List<Long> categories);
+
 }
