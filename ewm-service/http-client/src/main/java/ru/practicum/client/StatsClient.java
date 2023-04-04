@@ -17,7 +17,7 @@ public class StatsClient extends BaseClient {
     private static final String API_PREFIX = "/";
 
     @Autowired
-    public StatsClient(@Value("${stats-server.url}") String serverUrl, RestTemplateBuilder builder) {
+    public StatsClient(@Value("http://stats-server:9090") String serverUrl, RestTemplateBuilder builder) {
         super(
                 builder
                         .uriTemplateHandler(new DefaultUriBuilderFactory(serverUrl + API_PREFIX))
@@ -37,6 +37,6 @@ public class StatsClient extends BaseClient {
                 "uris", uris,
                 "unique", unique
         );
-        return get("/stats?start={start}&end={end}&uris={uris}&unique={unique}", parameters);
+        return get("/stats?start={start}&end={end}&uris={uris}&unique={unique}", parameters);//если не будет работать убрать параметры из запроса, они автоматически подставятся
     }
 }

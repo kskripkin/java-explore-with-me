@@ -10,7 +10,6 @@ import ru.practicum.server.model.EndpointHit;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 @Slf4j
@@ -20,7 +19,7 @@ public class StatsServiceImpl implements StatsService {
 
     private final EndpointHitRepository endpointHitRepository;
 
-    private DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
+    private final DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
 
     @Override
     public EndpointHit hit(EndpointHit endpointHit) {
@@ -28,11 +27,13 @@ public class StatsServiceImpl implements StatsService {
     }
 
     @Override
-    public List<ViewStats> stats(String start, String end, String[] uris, boolean unique) {
-        ArrayList<String> listUris = new ArrayList<>(Arrays.asList(uris));
+    public List<ViewStats> stats(String start, String end, List<String> uris, boolean unique) {
         LocalDateTime startTime = LocalDateTime.parse(start, formatter);
         LocalDateTime endTime = LocalDateTime.parse(end, formatter);
-        if (listUris.isEmpty()) {
+        if (uris == null) {
+            uris = new ArrayList<>();
+        }
+        if (uris.isEmpty()) {
             if (unique) {
                 return endpointHitRepository.getAllUniqueIp(startTime, endTime);
             } else {
@@ -40,9 +41,9 @@ public class StatsServiceImpl implements StatsService {
             }
         } else {
             if (unique) {
-                return endpointHitRepository.getAllUniqueIp(startTime, endTime, listUris);
+                return endpointHitRepository.getAllUniqueIp(startTime, endTime, uris);
             } else {
-                return endpointHitRepository.getAll(startTime, endTime, listUris);
+                return endpointHitRepository.getAll(startTime, endTime, uris);
             }
         }
     }

@@ -23,7 +23,7 @@ services:
     command: postgres -c port=5432
     volumes:
       - /var/lib/postgresql/data/
-    container_name: postgres
+    container_name: postgres-stats
     ports:
       - "5432:5432"
     environment:
@@ -34,13 +34,32 @@ services:
 
   ewm-service:
     build:
-      context: ewm-service/http-client/.
+      context: ewm-service/service/.
       dockerfile: Dockerfile
     container_name: ewmService
     ports:
       - "8080:8080"
+    depends_on:
+      - ewm-db
     environment:
+      - SPRING_DATASOURCE_URL=jdbc:postgresql://ewm-db:5433/ewmExploreWithMe
+      - DB_NAME=statsExploreWithMe
+      - POSTGRES_USER=root
+      - POSTGRES_PASSWORD=root
+      - DB_HOST=stats-db
+      - DB_PORT=5432
       - TZ=Europe/London
 
   ewm-db:
     image: postgres:14-alpine
+    command: postgres -c port=5433
+    volumes:
+      - /var/lib/postgresql/data/
+    container_name: postgres-ewm
+    ports:
+      - "5433:5433"
+    environment:
+      - POSTGRES_PASSWORD=root
+      - POSTGRES_USER=root
+      - POSTGRES_DB=ewmExploreWithMe
+      - TZ=Europe/London
