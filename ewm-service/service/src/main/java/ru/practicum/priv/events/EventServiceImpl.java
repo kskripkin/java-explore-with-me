@@ -46,11 +46,11 @@ public class EventServiceImpl implements EventService {
         validateEvents.validateFromAndSize(from, size);
         return eventRepository.getEvents(userId, PageRequest.of((from / size), size))
                 .stream()
-                .map(x -> eventMapper.eventToEventShortDto(
-                        x,
-                        categoriesRepository.getById(x.getCategory()),
-                        userRepository.getById(x.getInitiator()),
-                        locationsRepository.getById(x.getLocation())
+                .map(event -> eventMapper.eventToEventShortDto(
+                        event,
+                        categoriesRepository.getById(event.getCategory()),
+                        userRepository.getById(event.getInitiator()),
+                        locationsRepository.getById(event.getLocation())
                 )).collect(Collectors.toList());
     }
 
@@ -111,7 +111,7 @@ public class EventServiceImpl implements EventService {
     public List<ParticipationRequestDto> getRequests(long userId, long eventId) {
         return requestsRepository.getByIdCurrentUser(eventId)
                 .stream()
-                .map(x -> requestMapper.requestToParticipationRequestDto(x)).collect(Collectors.toList());
+                .map(request -> requestMapper.requestToParticipationRequestDto(request)).collect(Collectors.toList());
     }
 
     @Transactional
@@ -127,12 +127,12 @@ public class EventServiceImpl implements EventService {
         eventRequestStatusUpdateResult.setConfirmedRequests(
                 requestsRepository.getRequestsByEventIdAndStatus("CONFIRMED", eventId)
                         .stream()
-                        .map(x -> requestMapper.requestToParticipationRequestDto(x)).collect(Collectors.toList())
+                        .map(request -> requestMapper.requestToParticipationRequestDto(request)).collect(Collectors.toList())
         );
         eventRequestStatusUpdateResult.setRejectedRequests(
                 requestsRepository.getRequestsByEventIdAndStatus("REJECTED", eventId)
                         .stream()
-                        .map(x -> requestMapper.requestToParticipationRequestDto(x)).collect(Collectors.toList())
+                        .map(request -> requestMapper.requestToParticipationRequestDto(request)).collect(Collectors.toList())
         );
         return eventRequestStatusUpdateResult;
     }

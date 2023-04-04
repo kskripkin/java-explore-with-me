@@ -18,7 +18,9 @@ import ru.practicum.validation.ValidateEvents;
 
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.stream.Collectors;
 
 @Service
@@ -44,98 +46,118 @@ public class EventsServiceImpl implements EventsService {
         validateEvents.validateFromAndSize(from, size);
         LocalDateTime localDateTimeStartRange = LocalDateTime.parse(rangeStart, formatter);
         LocalDateTime localDateTimeEndRange = LocalDateTime.parse(rangeEnd, formatter);
+
+        Map<Long, Event> eventMap = new HashMap<>();
+
         if (categories != null) {
             switch (sort) {
                 case "EVENT_DATE":
                     if (onlyAvailable) {
-                        List<Event> eventList = eventRepository.getEventsSortEventDate(text, categories, paid, localDateTimeStartRange, localDateTimeEndRange, PageRequest.of((from / size), size));
 
-                        List<Long> categoryIdList = eventList.stream().map(x -> x.getCategory()).collect(Collectors.toList());
-                        List<Category> categoryList = categoriesRepository.getAll(categoryIdList);
+                        eventRepository.getEventsSortEventDate(text, categories, paid, localDateTimeStartRange, localDateTimeEndRange, PageRequest.of((from / size), size))
+                                .stream().forEach(event -> eventMap.put(event.getId(), event));
 
-                        List<Long> userIdList = eventList.stream().map(x -> x.getInitiator()).collect(Collectors.toList());
-                        List<User> userList = userRepository.getAll(userIdList);
+                        List<Long> categoryIdList = eventMap.entrySet().stream().map(event -> event.getValue().getCategory()).collect(Collectors.toList());
+                        Map<Long, Category> categoryMap = new HashMap<>();
+                        categoriesRepository.getAll(categoryIdList).stream().forEach(category -> categoryMap.put(category.getId(), category));
 
-                        List<Long> locationIdList = eventList.stream().map(x -> x.getLocation()).collect(Collectors.toList());
-                        List<Location> locationList = locationsRepository.getAll(locationIdList);
+                        List<Long> userIdList = eventMap.entrySet().stream().map(event -> event.getValue().getInitiator()).collect(Collectors.toList());
+                        Map<Long, User> userMap = new HashMap<>();
+                        userRepository.getAll(userIdList).stream().forEach(user -> userMap.put(user.getId(), user));
 
-                        return eventList
+                        List<Long> locationIdList = eventMap.entrySet().stream().map(event -> event.getValue().getLocation()).collect(Collectors.toList());
+                        Map<Long, Location> locationMap = new HashMap<>();
+                        locationsRepository.getAll(locationIdList).stream().forEach(location -> locationMap.put(location.getId(), location));
+
+                        return eventMap.entrySet()
                                 .stream()
-                                .filter(x -> x.getParticipantLimit() > x.getConfirmedRequests())
-                                .map(x -> eventMapper.eventToEventShortDto(
-                                        x,
-                                        categoryList.stream().filter(v -> v.getId() == x.getCategory()).findFirst().get(),
-                                        userList.stream().filter(v -> v.getId() == x.getInitiator()).findFirst().get(),
-                                        locationList.stream().filter(v -> v.getId() == x.getLocation()).findFirst().get()
+                                .filter(event -> event.getValue().getParticipantLimit() > event.getValue().getConfirmedRequests())
+                                .map(entrySetEvent -> eventMapper.eventToEventShortDto(
+                                        entrySetEvent.getValue(),
+                                        categoryMap.get(entrySetEvent.getValue().getCategory()),
+                                        userMap.get(entrySetEvent.getValue().getInitiator()),
+                                        locationMap.get(entrySetEvent.getValue().getLocation())
                                 ))
                                 .collect(Collectors.toList());
                     } else {
 
-                        List<Event> eventList = eventRepository.getEventsSortEventDate(text, categories, paid, localDateTimeStartRange, localDateTimeEndRange, PageRequest.of((from / size), size));
+                        eventRepository.getEventsSortEventDate(text, categories, paid, localDateTimeStartRange, localDateTimeEndRange, PageRequest.of((from / size), size))
+                                .stream().forEach(event -> eventMap.put(event.getId(), event));
 
-                        List<Long> categoryIdList = eventList.stream().map(x -> x.getCategory()).collect(Collectors.toList());
-                        List<Category> categoryList = categoriesRepository.getAll(categoryIdList);
+                        List<Long> categoryIdList = eventMap.entrySet().stream().map(event -> event.getValue().getCategory()).collect(Collectors.toList());
+                        Map<Long, Category> categoryMap = new HashMap<>();
+                        categoriesRepository.getAll(categoryIdList).stream().forEach(category -> categoryMap.put(category.getId(), category));
 
-                        List<Long> userIdList = eventList.stream().map(x -> x.getInitiator()).collect(Collectors.toList());
-                        List<User> userList = userRepository.getAll(userIdList);
+                        List<Long> userIdList = eventMap.entrySet().stream().map(event -> event.getValue().getInitiator()).collect(Collectors.toList());
+                        Map<Long, User> userMap = new HashMap<>();
+                        userRepository.getAll(userIdList).stream().forEach(user -> userMap.put(user.getId(), user));
 
-                        List<Long> locationIdList = eventList.stream().map(x -> x.getLocation()).collect(Collectors.toList());
-                        List<Location> locationList = locationsRepository.getAll(locationIdList);
+                        List<Long> locationIdList = eventMap.entrySet().stream().map(event -> event.getValue().getLocation()).collect(Collectors.toList());
+                        Map<Long, Location> locationMap = new HashMap<>();
+                        locationsRepository.getAll(locationIdList).stream().forEach(location -> locationMap.put(location.getId(), location));
 
-                        return eventList
+                        return eventMap.entrySet()
                                 .stream()
-                                .map(x -> eventMapper.eventToEventShortDto(
-                                        x,
-                                        categoryList.stream().filter(v -> v.getId() == x.getCategory()).findFirst().get(),
-                                        userList.stream().filter(v -> v.getId() == x.getInitiator()).findFirst().get(),
-                                        locationList.stream().filter(v -> v.getId() == x.getLocation()).findFirst().get()
+                                .map(entrySetEvent -> eventMapper.eventToEventShortDto(
+                                        entrySetEvent.getValue(),
+                                        categoryMap.get(entrySetEvent.getValue().getCategory()),
+                                        userMap.get(entrySetEvent.getValue().getInitiator()),
+                                        locationMap.get(entrySetEvent.getValue().getLocation())
                                 ))
                                 .collect(Collectors.toList());
                     }
                 case "VIEWS":
                     if (onlyAvailable) {
 
-                        List<Event> eventList = eventRepository.getEventsSortViews(text, categories, paid, localDateTimeStartRange, localDateTimeEndRange, PageRequest.of((from / size), size));
+                        eventRepository.getEventsSortViews(text, categories, paid, localDateTimeStartRange, localDateTimeEndRange, PageRequest.of((from / size), size))
+                                .stream().forEach(event -> eventMap.put(event.getId(), event));
 
-                        List<Long> categoryIdList = eventList.stream().map(x -> x.getCategory()).collect(Collectors.toList());
-                        List<Category> categoryList = categoriesRepository.getAll(categoryIdList);
+                        List<Long> categoryIdList = eventMap.entrySet().stream().map(event -> event.getValue().getCategory()).collect(Collectors.toList());
+                        Map<Long, Category> categoryMap = new HashMap<>();
+                        categoriesRepository.getAll(categoryIdList).stream().forEach(category -> categoryMap.put(category.getId(), category));
 
-                        List<Long> userIdList = eventList.stream().map(x -> x.getInitiator()).collect(Collectors.toList());
-                        List<User> userList = userRepository.getAll(userIdList);
+                        List<Long> userIdList = eventMap.entrySet().stream().map(event -> event.getValue().getInitiator()).collect(Collectors.toList());
+                        Map<Long, User> userMap = new HashMap<>();
+                        userRepository.getAll(userIdList).stream().forEach(user -> userMap.put(user.getId(), user));
 
-                        List<Long> locationIdList = eventList.stream().map(x -> x.getLocation()).collect(Collectors.toList());
-                        List<Location> locationList = locationsRepository.getAll(locationIdList);
+                        List<Long> locationIdList = eventMap.entrySet().stream().map(event -> event.getValue().getLocation()).collect(Collectors.toList());
+                        Map<Long, Location> locationMap = new HashMap<>();
+                        locationsRepository.getAll(locationIdList).stream().forEach(location -> locationMap.put(location.getId(), location));
 
-                        return eventList
+                        return eventMap.entrySet()
                                 .stream()
-                                .filter(x -> x.getParticipantLimit() > x.getConfirmedRequests())
-                                .map(x -> eventMapper.eventToEventShortDto(
-                                        x,
-                                        categoryList.stream().filter(v -> v.getId() == x.getCategory()).findFirst().get(),
-                                        userList.stream().filter(v -> v.getId() == x.getInitiator()).findFirst().get(),
-                                        locationList.stream().filter(v -> v.getId() == x.getLocation()).findFirst().get()
+                                .filter(entrySetEvent -> entrySetEvent.getValue().getParticipantLimit() > entrySetEvent.getValue().getConfirmedRequests())
+                                .map(entrySetEvent -> eventMapper.eventToEventShortDto(
+                                        entrySetEvent.getValue(),
+                                        categoryMap.get(entrySetEvent.getValue().getCategory()),
+                                        userMap.get(entrySetEvent.getValue().getInitiator()),
+                                        locationMap.get(entrySetEvent.getValue().getLocation())
                                 ))
                                 .collect(Collectors.toList());
                     } else {
 
-                        List<Event> eventList = eventRepository.getEventsSortViews(text, categories, paid, localDateTimeStartRange, localDateTimeEndRange, PageRequest.of((from / size), size));
+                        eventRepository.getEventsSortViews(text, categories, paid, localDateTimeStartRange, localDateTimeEndRange, PageRequest.of((from / size), size))
+                                .stream().forEach(event -> eventMap.put(event.getId(), event));
 
-                        List<Long> categoryIdList = eventList.stream().map(x -> x.getCategory()).collect(Collectors.toList());
-                        List<Category> categoryList = categoriesRepository.getAll(categoryIdList);
+                        List<Long> categoryIdList = eventMap.entrySet().stream().map(event -> event.getValue().getCategory()).collect(Collectors.toList());
+                        Map<Long, Category> categoryMap = new HashMap<>();
+                        categoriesRepository.getAll(categoryIdList).stream().forEach(category -> categoryMap.put(category.getId(), category));
 
-                        List<Long> userIdList = eventList.stream().map(x -> x.getInitiator()).collect(Collectors.toList());
-                        List<User> userList = userRepository.getAll(userIdList);
+                        List<Long> userIdList = eventMap.entrySet().stream().map(event -> event.getValue().getInitiator()).collect(Collectors.toList());
+                        Map<Long, User> userMap = new HashMap<>();
+                        userRepository.getAll(userIdList).stream().forEach(user -> userMap.put(user.getId(), user));
 
-                        List<Long> locationIdList = eventList.stream().map(x -> x.getLocation()).collect(Collectors.toList());
-                        List<Location> locationList = locationsRepository.getAll(locationIdList);
+                        List<Long> locationIdList = eventMap.entrySet().stream().map(event -> event.getValue().getLocation()).collect(Collectors.toList());
+                        Map<Long, Location> locationMap = new HashMap<>();
+                        locationsRepository.getAll(locationIdList).stream().forEach(location -> locationMap.put(location.getId(), location));
 
-                        return eventList
+                        return eventMap.entrySet()
                                 .stream()
-                                .map(x -> eventMapper.eventToEventShortDto(
-                                        x,
-                                        categoryList.stream().filter(v -> v.getId() == x.getCategory()).findFirst().get(),
-                                        userList.stream().filter(v -> v.getId() == x.getInitiator()).findFirst().get(),
-                                        locationList.stream().filter(v -> v.getId() == x.getLocation()).findFirst().get()
+                                .map(entrySetEvent -> eventMapper.eventToEventShortDto(
+                                        entrySetEvent.getValue(),
+                                        categoryMap.get(entrySetEvent.getValue().getCategory()),
+                                        userMap.get(entrySetEvent.getValue().getInitiator()),
+                                        locationMap.get(entrySetEvent.getValue().getLocation())
                                 ))
                                 .collect(Collectors.toList());
                     }
@@ -147,94 +169,110 @@ public class EventsServiceImpl implements EventsService {
                 case "EVENT_DATE":
                     if (onlyAvailable) {
 
-                        List<Event> eventList = eventRepository.getEventsSortEventDate(text, paid, localDateTimeStartRange, localDateTimeEndRange, PageRequest.of((from / size), size));
+                        eventRepository.getEventsSortEventDate(text, paid, localDateTimeStartRange, localDateTimeEndRange, PageRequest.of((from / size), size))
+                                .stream().forEach(event -> eventMap.put(event.getId(), event));
 
-                        List<Long> categoryIdList = eventList.stream().map(x -> x.getCategory()).collect(Collectors.toList());
-                        List<Category> categoryList = categoriesRepository.getAll(categoryIdList);
+                        List<Long> categoryIdList = eventMap.entrySet().stream().map(event -> event.getValue().getCategory()).collect(Collectors.toList());
+                        Map<Long, Category> categoryMap = new HashMap<>();
+                        categoriesRepository.getAll(categoryIdList).stream().forEach(category -> categoryMap.put(category.getId(), category));
 
-                        List<Long> userIdList = eventList.stream().map(x -> x.getInitiator()).collect(Collectors.toList());
-                        List<User> userList = userRepository.getAll(userIdList);
+                        List<Long> userIdList = eventMap.entrySet().stream().map(event -> event.getValue().getInitiator()).collect(Collectors.toList());
+                        Map<Long, User> userMap = new HashMap<>();
+                        userRepository.getAll(userIdList).stream().forEach(user -> userMap.put(user.getId(), user));
 
-                        List<Long> locationIdList = eventList.stream().map(x -> x.getLocation()).collect(Collectors.toList());
-                        List<Location> locationList = locationsRepository.getAll(locationIdList);
+                        List<Long> locationIdList = eventMap.entrySet().stream().map(event -> event.getValue().getLocation()).collect(Collectors.toList());
+                        Map<Long, Location> locationMap = new HashMap<>();
+                        locationsRepository.getAll(locationIdList).stream().forEach(location -> locationMap.put(location.getId(), location));
 
-                        return eventList
+                        return eventMap.entrySet()
                                 .stream()
-                                .filter(x -> x.getParticipantLimit() > x.getConfirmedRequests())
-                                .map(x -> eventMapper.eventToEventShortDto(
-                                        x,
-                                        categoryList.stream().filter(v -> v.getId() == x.getCategory()).findFirst().get(),
-                                        userList.stream().filter(v -> v.getId() == x.getInitiator()).findFirst().get(),
-                                        locationList.stream().filter(v -> v.getId() == x.getLocation()).findFirst().get()
+                                .filter(entrySetEvent -> entrySetEvent.getValue().getParticipantLimit() > entrySetEvent.getValue().getConfirmedRequests())
+                                .map(entrySetEvent -> eventMapper.eventToEventShortDto(
+                                        entrySetEvent.getValue(),
+                                        categoryMap.get(entrySetEvent.getValue().getCategory()),
+                                        userMap.get(entrySetEvent.getValue().getInitiator()),
+                                        locationMap.get(entrySetEvent.getValue().getLocation())
                                 ))
                                 .collect(Collectors.toList());
                     } else {
 
-                        List<Event> eventList = eventRepository.getEventsSortEventDate(text, paid, localDateTimeStartRange, localDateTimeEndRange, PageRequest.of((from / size), size));
+                        eventRepository.getEventsSortEventDate(text, paid, localDateTimeStartRange, localDateTimeEndRange, PageRequest.of((from / size), size))
+                                .stream().forEach(event -> eventMap.put(event.getId(), event));
 
-                        List<Long> categoryIdList = eventList.stream().map(x -> x.getCategory()).collect(Collectors.toList());
-                        List<Category> categoryList = categoriesRepository.getAll(categoryIdList);
+                        List<Long> categoryIdList = eventMap.entrySet().stream().map(event -> event.getValue().getCategory()).collect(Collectors.toList());
+                        Map<Long, Category> categoryMap = new HashMap<>();
+                        categoriesRepository.getAll(categoryIdList).stream().forEach(category -> categoryMap.put(category.getId(), category));
 
-                        List<Long> userIdList = eventList.stream().map(x -> x.getInitiator()).collect(Collectors.toList());
-                        List<User> userList = userRepository.getAll(userIdList);
+                        List<Long> userIdList = eventMap.entrySet().stream().map(event -> event.getValue().getInitiator()).collect(Collectors.toList());
+                        Map<Long, User> userMap = new HashMap<>();
+                        userRepository.getAll(userIdList).stream().forEach(user -> userMap.put(user.getId(), user));
 
-                        List<Long> locationIdList = eventList.stream().map(x -> x.getLocation()).collect(Collectors.toList());
-                        List<Location> locationList = locationsRepository.getAll(locationIdList);
+                        List<Long> locationIdList = eventMap.entrySet().stream().map(event -> event.getValue().getLocation()).collect(Collectors.toList());
+                        Map<Long, Location> locationMap = new HashMap<>();
+                        locationsRepository.getAll(locationIdList).stream().forEach(location -> locationMap.put(location.getId(), location));
 
-                        return eventList
+                        return eventMap.entrySet()
                                 .stream()
-                                .map(x -> eventMapper.eventToEventShortDto(
-                                        x,
-                                        categoryList.stream().filter(v -> v.getId() == x.getCategory()).findFirst().get(),
-                                        userList.stream().filter(v -> v.getId() == x.getInitiator()).findFirst().get(),
-                                        locationList.stream().filter(v -> v.getId() == x.getLocation()).findFirst().get()
+                                .map(entrySetEvent -> eventMapper.eventToEventShortDto(
+                                        entrySetEvent.getValue(),
+                                        categoryMap.get(entrySetEvent.getValue().getCategory()),
+                                        userMap.get(entrySetEvent.getValue().getInitiator()),
+                                        locationMap.get(entrySetEvent.getValue().getLocation())
                                 ))
                                 .collect(Collectors.toList());
                     }
                 case "VIEWS":
                     if (onlyAvailable) {
 
-                        List<Event> eventList = eventRepository.getEventsSortViews(text, paid, localDateTimeStartRange, localDateTimeEndRange, PageRequest.of((from / size), size));
+                        eventRepository.getEventsSortViews(text, paid, localDateTimeStartRange, localDateTimeEndRange, PageRequest.of((from / size), size))
+                                .stream().forEach(event -> eventMap.put(event.getId(), event));
 
-                        List<Long> categoryIdList = eventList.stream().map(x -> x.getCategory()).collect(Collectors.toList());
-                        List<Category> categoryList = categoriesRepository.getAll(categoryIdList);
+                        List<Long> categoryIdList = eventMap.entrySet().stream().map(event -> event.getValue().getCategory()).collect(Collectors.toList());
+                        Map<Long, Category> categoryMap = new HashMap<>();
+                        categoriesRepository.getAll(categoryIdList).stream().forEach(category -> categoryMap.put(category.getId(), category));
 
-                        List<Long> userIdList = eventList.stream().map(x -> x.getInitiator()).collect(Collectors.toList());
-                        List<User> userList = userRepository.getAll(userIdList);
+                        List<Long> userIdList = eventMap.entrySet().stream().map(event -> event.getValue().getInitiator()).collect(Collectors.toList());
+                        Map<Long, User> userMap = new HashMap<>();
+                        userRepository.getAll(userIdList).stream().forEach(user -> userMap.put(user.getId(), user));
 
-                        List<Long> locationIdList = eventList.stream().map(x -> x.getLocation()).collect(Collectors.toList());
-                        List<Location> locationList = locationsRepository.getAll(locationIdList);
+                        List<Long> locationIdList = eventMap.entrySet().stream().map(event -> event.getValue().getLocation()).collect(Collectors.toList());
+                        Map<Long, Location> locationMap = new HashMap<>();
+                        locationsRepository.getAll(locationIdList).stream().forEach(location -> locationMap.put(location.getId(), location));
 
-                        return eventList
+                        return eventMap.entrySet()
                                 .stream()
-                                .filter(x -> x.getParticipantLimit() > x.getConfirmedRequests())
-                                .map(x -> eventMapper.eventToEventShortDto(
-                                        x,
-                                        categoryList.stream().filter(v -> v.getId() == x.getCategory()).findFirst().get(),
-                                        userList.stream().filter(v -> v.getId() == x.getInitiator()).findFirst().get(),
-                                        locationList.stream().filter(v -> v.getId() == x.getLocation()).findFirst().get()
+                                .filter(entrySetEvent -> entrySetEvent.getValue().getParticipantLimit() > entrySetEvent.getValue().getConfirmedRequests())
+                                .map(entrySetEvent -> eventMapper.eventToEventShortDto(
+                                        entrySetEvent.getValue(),
+                                        categoryMap.get(entrySetEvent.getValue().getCategory()),
+                                        userMap.get(entrySetEvent.getValue().getInitiator()),
+                                        locationMap.get(entrySetEvent.getValue().getLocation())
                                 ))
                                 .collect(Collectors.toList());
                     } else {
 
-                        List<Event> eventList = eventRepository.getEventsSortViews(text, paid, localDateTimeStartRange, localDateTimeEndRange, PageRequest.of((from / size), size));
+                        eventRepository.getEventsSortViews(text, paid, localDateTimeStartRange, localDateTimeEndRange, PageRequest.of((from / size), size))
+                                .stream().forEach(event -> eventMap.put(event.getId(), event));
 
-                        List<Long> categoryIdList = eventList.stream().map(x -> x.getCategory()).collect(Collectors.toList());
-                        List<Category> categoryList = categoriesRepository.getAll(categoryIdList);
+                        List<Long> categoryIdList = eventMap.entrySet().stream().map(event -> event.getValue().getCategory()).collect(Collectors.toList());
+                        Map<Long, Category> categoryMap = new HashMap<>();
+                        categoriesRepository.getAll(categoryIdList).stream().forEach(category -> categoryMap.put(category.getId(), category));
 
-                        List<Long> userIdList = eventList.stream().map(x -> x.getInitiator()).collect(Collectors.toList());
-                        List<User> userList = userRepository.getAll(userIdList);
+                        List<Long> userIdList = eventMap.entrySet().stream().map(event -> event.getValue().getInitiator()).collect(Collectors.toList());
+                        Map<Long, User> userMap = new HashMap<>();
+                        userRepository.getAll(userIdList).stream().forEach(user -> userMap.put(user.getId(), user));
 
-                        List<Long> locationIdList = eventList.stream().map(x -> x.getLocation()).collect(Collectors.toList());
-                        List<Location> locationList = locationsRepository.getAll(locationIdList);
+                        List<Long> locationIdList = eventMap.entrySet().stream().map(event -> event.getValue().getLocation()).collect(Collectors.toList());
+                        Map<Long, Location> locationMap = new HashMap<>();
+                        locationsRepository.getAll(locationIdList).stream().forEach(location -> locationMap.put(location.getId(), location));
 
-                        return eventList
+                        return eventMap.entrySet()
                                 .stream()
-                                .map(x -> eventMapper.eventToEventShortDto(
-                                        x,
-                                        categoryList.stream().filter(v -> v.getId() == x.getCategory()).findFirst().get(),
-                                        userList.stream().filter(v -> v.getId() == x.getInitiator()).findFirst().get(),
-                                        locationList.stream().filter(v -> v.getId() == x.getLocation()).findFirst().get()
+                                .map(entrySetEvent -> eventMapper.eventToEventShortDto(
+                                        entrySetEvent.getValue(),
+                                        categoryMap.get(entrySetEvent.getValue().getCategory()),
+                                        userMap.get(entrySetEvent.getValue().getInitiator()),
+                                        locationMap.get(entrySetEvent.getValue().getLocation())
                                 ))
                                 .collect(Collectors.toList());
                     }

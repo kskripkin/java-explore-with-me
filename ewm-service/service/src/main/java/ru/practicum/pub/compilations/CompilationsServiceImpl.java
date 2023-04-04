@@ -21,7 +21,9 @@ import ru.practicum.pub.events.EventRepository;
 import ru.practicum.validation.ValidateEvents;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.stream.Collectors;
 
 @RequiredArgsConstructor
@@ -49,70 +51,81 @@ public class CompilationsServiceImpl implements  CompilationsService {
     @Override
     public List<CompilationDto> getCompilations(boolean pinned, Integer from, Integer size) {
         validateEvents.validateFromAndSize(from, size);
+
         List<Compilation> compilationList = compilationRepository.getCompilations(pinned, PageRequest.of((from / size), size));
 
-        List<Event> eventList = eventRepository.getAll(compilationList.stream().map(x -> x.getId()).collect(Collectors.toList()));
+        Map<Long, Event> eventMap = new HashMap<>();
+        eventRepository.getAll(compilationList.stream().map(compilation -> compilation.getId()).collect(Collectors.toList()))
+                .stream().forEach(event -> eventMap.put(event.getId(), event));
 
-        List<EventsToCompilation> eventsToCompilationList = eventsCompilationRepository.getAll(compilationList.stream().map(x -> x.getId()).collect(Collectors.toList()));
+        List<EventsToCompilation> eventsToCompilationList = eventsCompilationRepository.getAll(compilationList.stream().map(compilation -> compilation.getId()).collect(Collectors.toList()));
 
-        List<Long> categoryIdList = eventList.stream().map(x -> x.getCategory()).collect(Collectors.toList());
-        List<Category> categoryList = categoriesRepository.getAll(categoryIdList);
+        List<Long> categoryIdList = eventMap.entrySet().stream().map(event -> event.getValue().getCategory()).collect(Collectors.toList());
+        Map<Long, Category> categoryMap = new HashMap<>();
+        categoriesRepository.getAll(categoryIdList).stream().forEach(category -> categoryMap.put(category.getId(), category));
 
-        List<Long> userIdList = eventList.stream().map(x -> x.getInitiator()).collect(Collectors.toList());
-        List<User> userList = userRepository.getAll(userIdList);
+        List<Long> userIdList = eventMap.entrySet().stream().map(event -> event.getValue().getInitiator()).collect(Collectors.toList());
+        Map<Long, User> userMap = new HashMap<>();
+        userRepository.getAll(userIdList).stream().forEach(user -> userMap.put(user.getId(), user));
 
-        List<Long> locationIdList = eventList.stream().map(x -> x.getLocation()).collect(Collectors.toList());
-        List<Location> locationList = locationsRepository.getAll(locationIdList);
+        List<Long> locationIdList = eventMap.entrySet().stream().map(event -> event.getValue().getLocation()).collect(Collectors.toList());
+        Map<Long, Location> locationMap = new HashMap<>();
+        locationsRepository.getAll(locationIdList).stream().forEach(location -> locationMap.put(location.getId(), location));
 
         return compilationList
                 .stream()
-                .map(x -> compilationsMapper.compilationsToCompilationDto(
-                                x,
-                                eventToCompilationMapEvent(eventList, eventsToCompilationList, x.getId()).stream()
-                                        .map(c -> eventMapper.eventToEventShortDto(
-                                                c,
-                                                categoryList.stream().filter(v -> v.getId() == c.getCategory()).findFirst().get(),
-                                                userList.stream().filter(v -> v.getId() == c.getInitiator()).findFirst().get(),
-                                                locationList.stream().filter(v -> v.getId() == c.getLocation()).findFirst().get()
+                .map(compilation -> compilationsMapper.compilationsToCompilationDto(
+                                compilation,
+                                eventToCompilationMapEvent(eventMap, eventsToCompilationList, compilation.getId()).entrySet().stream()
+                                        .map(entrySetEvent -> eventMapper.eventToEventShortDto(
+                                                entrySetEvent.getValue(),
+                                                categoryMap.get(entrySetEvent.getValue().getCategory()),
+                                                userMap.get(entrySetEvent.getValue().getInitiator()),
+                                                locationMap.get(entrySetEvent.getValue().getLocation())
                                         )).collect(Collectors.toList())
                         )
                 )
                 .collect(Collectors.toList());
     }
 
-    private List<Event> eventToCompilationMapEvent(List<Event> eventList, List<EventsToCompilation> eventsToCompilationList, Long compId) {
-        List<Event> returnedListEvent = new ArrayList<>();
-        for (int i = 0; i < eventList.size(); i++) {
+    private Map<Long, Event> eventToCompilationMapEvent(Map<Long, Event> eventMap, List<EventsToCompilation> eventsToCompilationList, Long compId) {
+        Map<Long, Event> returnedMapEvent = new HashMap<>();
+        for (Map.Entry<Long, Event> entry : eventMap.entrySet()) {
             for (int j = 0; j < eventsToCompilationList.size(); j++) {
-                if (eventList.get(i).getId() == eventsToCompilationList.get(j).getIdEvent() && eventsToCompilationList.get(j).getIdCompilation() == compId) {
-                    returnedListEvent.add(eventList.get(i));
+                if (entry.getValue().getId() == eventsToCompilationList.get(j).getIdEvent() && eventsToCompilationList.get(j).getIdCompilation() == compId) {
+                    returnedMapEvent.put(entry.getValue().getId(), entry.getValue());
                 }
             }
         }
-        return returnedListEvent;
+        return returnedMapEvent;
     }
 
     @Override
     public CompilationDto getCompilation(long compId) {
-        List<Event> eventList = eventRepository.getEvents(compId);
+        Map<Long, Event> eventMap = new HashMap<>();
+        eventRepository.getEvents(compId).stream().forEach(event -> eventMap.put(event.getId(), event));
 
-        List<Long> categoryIdList = eventList.stream().map(x -> x.getCategory()).collect(Collectors.toList());
-        List<Category> categoryList = categoriesRepository.getAll(categoryIdList);
+        List<Long> categoryIdList = eventMap.entrySet().stream().map(event -> event.getValue().getCategory()).collect(Collectors.toList());
+        Map<Long, Category> categoryMap = new HashMap<>();
+        categoriesRepository.getAll(categoryIdList).stream().forEach(category -> categoryMap.put(category.getId(), category));
 
-        List<Long> userIdList = eventList.stream().map(x -> x.getInitiator()).collect(Collectors.toList());
-        List<User> userList = userRepository.getAll(userIdList);
+        List<Long> userIdList = eventMap.entrySet().stream().map(event -> event.getValue().getInitiator()).collect(Collectors.toList());
+        Map<Long, User> userMap = new HashMap<>();
+        userRepository.getAll(userIdList).stream().forEach(user -> userMap.put(user.getId(), user));
 
-        List<Long> locationIdList = eventList.stream().map(x -> x.getLocation()).collect(Collectors.toList());
-        List<Location> locationList = locationsRepository.getAll(locationIdList);
+        List<Long> locationIdList = eventMap.entrySet().stream().map(event -> event.getValue().getLocation()).collect(Collectors.toList());
+        Map<Long, Location> locationMap = new HashMap<>();
+        locationsRepository.getAll(locationIdList).stream().forEach(location -> locationMap.put(location.getId(), location));
 
-        List<EventShortDto> eventShortDtoList = eventList.stream()
-                .map(x -> eventMapper.eventToEventShortDto(
-                        x,
-                        categoryList.stream().filter(v -> v.getId() == x.getCategory()).findFirst().get(),
-                        userList.stream().filter(v -> v.getId() == x.getInitiator()).findFirst().get(),
-                        locationList.stream().filter(v -> v.getId() == x.getLocation()).findFirst().get()
+        List<EventShortDto> eventShortDtoList = eventMap.entrySet().stream()
+                .map(entrySetEvent -> eventMapper.eventToEventShortDto(
+                        entrySetEvent.getValue(),
+                        categoryMap.get(entrySetEvent.getValue().getCategory()),
+                        userMap.get(entrySetEvent.getValue().getInitiator()),
+                        locationMap.get(entrySetEvent.getValue().getLocation())
                 ))
                 .collect(Collectors.toList());
+
         return compilationsMapper.compilationsToCompilationDto(
                 compilationRepository.getCompilations(compId),
                 eventShortDtoList

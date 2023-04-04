@@ -36,7 +36,7 @@ public class RequestsServiceImpl implements RequestsService {
         validateUsers.findUser(userId);
         return requestsRepository.getByRequesterId(userId)
                 .stream()
-                .map(x -> requestMapper.requestToParticipationRequestDto(x))
+                .map(request -> requestMapper.requestToParticipationRequestDto(request))
                 .collect(Collectors.toList());
     }
 
