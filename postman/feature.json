@@ -138,7 +138,7 @@
           "variable": [
             {
               "key": "userId",
-              "value": null
+              "value": "1"
             }
           ]
         }
@@ -409,9 +409,47 @@
     },
     {
       "name": "Получение комментариев по id несуществующего события",
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "exec": [
+              "pm.test(\"Ответ должен содержать код статуса 404 и данные в формате json\", function () {\r",
+              "    pm.response.to.have.status(404);    \r",
+              "    pm.response.to.be.withBody;\r",
+              "    pm.response.to.be.json;\r",
+              "});"
+            ],
+            "type": "text/javascript"
+          }
+        }
+      ],
       "request": {
         "method": "GET",
-        "header": []
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json",
+            "type": "text"
+          }
+        ],
+        "url": {
+          "raw": "{{baseUrl}}/comments/event/:eventId",
+          "host": [
+            "{{baseUrl}}"
+          ],
+          "path": [
+            "comments",
+            "event",
+            ":eventId"
+          ],
+          "variable": [
+            {
+              "key": "eventId",
+              "value": "10000000"
+            }
+          ]
+        }
       },
       "response": []
     },
