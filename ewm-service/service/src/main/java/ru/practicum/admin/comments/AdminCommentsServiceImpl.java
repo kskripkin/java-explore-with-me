@@ -35,17 +35,23 @@ public class AdminCommentsServiceImpl implements AdminCommentsService {
         validateEvents.validateFromAndSize(from, size);
         if (rangeStart != null) {
             localDateTimeStartRange = LocalDateTime.parse(rangeStart, formatter);
+        } else {
+            localDateTimeStartRange = LocalDateTime.now().minusYears(10);
         }
         if (rangeStart != null) {
             localDateTimeEndRange = LocalDateTime.parse(rangeEnd, formatter);
+        } else {
+            localDateTimeEndRange = LocalDateTime.now().plusYears(10);
         }
         if (text == null) {
             text = "";
         }
-        if (authorId == null) {
-            return commentsRepository.findByAuthorId(text, authorId, localDateTimeStartRange, localDateTimeEndRange, PageRequest.of((from / size), size));
-        } else {
+        if (authorId == null && eventId != null) {
             return commentsRepository.findByEventId(text, eventId, localDateTimeStartRange, localDateTimeEndRange, PageRequest.of((from / size), size));
         }
+        if (eventId == null && authorId != null) {
+            return commentsRepository.findByAuthorId(text, authorId, localDateTimeStartRange, localDateTimeEndRange, PageRequest.of((from / size), size));
+        }
+        return commentsRepository.findByEventIdAndAuthorId(text, authorId, eventId, localDateTimeStartRange, localDateTimeEndRange, PageRequest.of((from / size), size));
     }
 }
