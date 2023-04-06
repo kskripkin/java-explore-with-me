@@ -17,6 +17,10 @@ public class AdminCommentsServiceImpl implements AdminCommentsService {
 
     private final DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
 
+    private final LocalDateTime DEFAULT_TIME_START_SEARCH = LocalDateTime.parse("1900-01-01 00:00:00", formatter);
+
+    private final LocalDateTime DEFAULT_TIME_END_SEARCH = LocalDateTime.parse("2200-01-01 00:00:00", formatter);
+
     private final CommentsRepository commentsRepository;
 
     private final ValidateEvents validateEvents;
@@ -36,12 +40,12 @@ public class AdminCommentsServiceImpl implements AdminCommentsService {
         if (rangeStart != null) {
             localDateTimeStartRange = LocalDateTime.parse(rangeStart, formatter);
         } else {
-            localDateTimeStartRange = LocalDateTime.now().minusYears(10);
+            localDateTimeStartRange = DEFAULT_TIME_START_SEARCH;
         }
         if (rangeStart != null) {
             localDateTimeEndRange = LocalDateTime.parse(rangeEnd, formatter);
         } else {
-            localDateTimeEndRange = LocalDateTime.now().plusYears(10);
+            localDateTimeEndRange = DEFAULT_TIME_END_SEARCH;
         }
         if (text == null) {
             text = "";
