@@ -4,6 +4,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
 import ru.practicum.exception.model.ConflictException;
+import ru.practicum.exception.model.NotFoundException;
 import ru.practicum.exception.model.ValidationException;
 import ru.practicum.model.events.Event;
 import ru.practicum.model.events.NewEventDto;
@@ -21,6 +22,12 @@ public class ValidateEvents {
     public void findEvent(Long eventId) {
         if (eventId == null || eventId == 0) {
             throw new ValidationException("eventId not found");
+        }
+    }
+
+    public void validateFindEvent(Long eventId) {
+        if (eventRepository.findById(eventId).isEmpty()) {
+            throw new NotFoundException("Event id not found");
         }
     }
 

@@ -2,6 +2,7 @@ package ru.practicum.mapper;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import ru.practicum.model.comment.Comment;
 import ru.practicum.model.compilations.Compilation;
 import ru.practicum.model.compilations.UpdateCompilationRequest;
 import ru.practicum.model.events.Event;
@@ -101,8 +102,26 @@ public class CustomerMapper {
         if (updateCompilationRequest.getTitle() != null) {
             compilation.setTitle(updateCompilationRequest.getTitle());
         }
-
-
         return compilation;
+    }
+
+    public Comment updateComment(Comment sourceComment, Comment comment) {
+        if (comment == null) {
+            return sourceComment;
+        }
+
+        if (comment.getText() != null) {
+            sourceComment.setText(comment.getText());
+        }
+        if (comment.getCreated() != null) {
+            sourceComment.setCreated(comment.getCreated());
+        }
+        if (comment.getAuthorId() != null) {
+            sourceComment.setAuthorId(comment.getAuthorId());
+        }
+        if (comment.getEventId() != null) {
+            sourceComment.setEventId(comment.getEventId());
+        }
+        return sourceComment;
     }
 }
